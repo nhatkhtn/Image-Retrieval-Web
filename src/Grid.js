@@ -36,15 +36,15 @@ const useStyles = makeStyles((theme) => ({
  *   },
  * ];
  */
-export default function ImageGridList() {
+export default function ImageGridList(props) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <GridList cellHeight={160} className={classes.gridList} cols={4}>
-        {tileData.map((tile) => (
-          <GridListTile key={tile.img} cols={tile.cols || 1}>
-            <img src={tile.img} alt={tile.title} />
+        {props.imageList.map((image) => (
+          <GridListTile key={image} >
+            <img src={`/LSC_Thumbnail/${image}`}/>
           </GridListTile>
         ))}
       </GridList>

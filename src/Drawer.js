@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -45,8 +45,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ClippedDrawer() {
+export default function SearchPanel(props) {
   const classes = useStyles();
+
+  const [query, setQuery] = useState('');
 
   return (
     <div>
@@ -69,19 +71,22 @@ export default function ClippedDrawer() {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <div className={classes.search}>
-            <TextField fullWidth id="outlined-search" label="Search Query" type="search" variant="outlined" />
+            <TextField 
+              fullWidth id="outlined-search" label="Search Query" type="search" variant="outlined" 
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
           </div>
-          <Divider />
-          <Tags />
-
-        
+          {/* <Divider /> */}
+          {/* <Tags /> */}
         </div>
         <Grid container justify="center">
           <div>
-
-        <Button variant="contained" color="primary"> Search </Button>
+            <Button variant="contained" color="primary" onClick = {()=>{props.clickSearch(query)}}>
+              Search 
+            </Button>
           </div>
-          </Grid>
+        </Grid>
 
       </Drawer>
     </div>
