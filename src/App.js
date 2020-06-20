@@ -5,8 +5,9 @@ import HeaderBar from './components/HeaderBar'
 import ImageGridList from './components/ImageGrid'
 import SearchDrawer from './components/SearchDrawer';
 import axios from 'axios';
+import update from 'immutability-helper';
 
-const drawerWidth = 400;
+const drawerWidth = 450;
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -14,37 +15,24 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const initialImageList = [
-  '2018-05-04/B00003970_21I6X0_20180504_105327E.JPG',
-  '2018-05-04/B00005345_21I6X0_20180504_203125E.JPG',
-  '2018-05-04/B00005510_21I6X0_20180504_221253E.JPG',
-  '2018-05-04/B00003737_21I6X0_20180504_090920E.JPG',
-  '2018-05-04/B00003868_21I6X0_20180504_100827E.JPG',
-  '2018-05-04/B00005239_21I6X0_20180504_194455E.JPG',
-  '2018-05-04/B00004905_21I6X0_20180504_172026E.JPG',
-  '2018-05-04/B00005376_21I6X0_20180504_204551E.JPG',
-  '2018-05-04/B00005074_21I6X0_20180504_183544E.JPG',
-  '2018-05-04/B00005496_21I6X0_20180504_220508E.JPG',
-  '2018-05-04/B00005613_21I6X0_20180504_230509E.JPG',
-  '2018-05-04/B00003986_21I6X0_20180504_105934E.JPG',
-  '2018-05-04/B00004717_21I6X0_20180504_160618E.JPG',
-  '2018-05-04/B00005032_21I6X0_20180504_181105E.JPG',
-  '2018-05-04/B00004306_21I6X0_20180504_131435E.JPG',
-  '2018-05-04/B00003746_21I6X0_20180504_091250E.JPG',
-  '2018-05-04/B00004183_21I6X0_20180504_122057E.JPG',
-  '2018-05-04/B00003683_21I6X0_20180504_084605E.JPG',
-  '2018-05-04/B00003503_21I6X0_20180504_073334E.JPG',
-  '2018-05-04/B00005036_21I6X0_20180504_181237E.JPG',
-  '2018-05-04/B00005609_21I6X0_20180504_230252E.JPG',
-  '2018-05-04/B00003562_21I6X0_20180504_075353E.JPG',
-  '2018-05-04/B00003571_21I6X0_20180504_075726E.JPG',
-  '2018-05-04/B00004929_21I6X0_20180504_173020E.JPG',
-  '2018-05-04/B00005246_21I6X0_20180504_194739E.JPG',
-  '2018-05-04/B00003669_21I6X0_20180504_084013E.JPG',
-  '2018-05-04/B00004196_21I6X0_20180504_122718E.JPG',
-  '2018-05-04/B00005265_21I6X0_20180504_195522E.JPG',
-  '2018-05-04/B00005707_21I6X0_20180504_235358E.JPG',
-  '2018-05-04/B00005172_21I6X0_20180504_191609E.JPG',]
+const initialImageList = []
+
+class Stage {
+  constructor() {
+    this.completed = false;
+    this.result = [];
+  }
+}
+
+
+const queryWithQuerySentence = (query) => {
+  console.log(`make query with sentence ${query}`)
+  return [1, 2, 3]
+}
+const queryWithSemanticLabels = (labels) => {
+  console.log(`filter with labels ${labels}`)
+  return [4, 5, 6]
+}
 
 export default function App() {
   const classes = useStyles();
@@ -54,7 +42,43 @@ export default function App() {
     setOpen(!open);
   }
 
+  const [stages, setStages] = useState([new Stage()])
   const [imageList, setImageList] = useState(initialImageList)
+
+
+  const addStage = () => {
+    setStages(stages => ([...stages, new Stage()]))
+  }
+  const makeQuery = (index) => {
+    return (method) => {
+      if (method === 0) {
+        return (query,numImages) => {
+          const queryResult = queryWithQuerySentence(query)
+          setStages(update(stages, {
+            [index]: {
+              completed: { $set: true, },
+              method: { $set: method, },
+              query: { $set: query, },
+              numImages: { $set: numImages }
+            },
+            $splice:[[index+1,stages.length-index-1]]}))
+        }
+      }
+      else if (method === 1) {
+        return (labels) => {
+          const queryResult = queryWithSemanticLabels(labels)
+          setStages(update(stages, {
+            [index]: {
+              completed: { $set: true, },
+              method: { $set: method, },
+              labels: { $set: labels, },
+            },
+            $splice:[[index+1,stages.length-index-1]]}))
+        }
+      }
+    }
+  }
+
 
   const serverAddress = 'http://127.0.0.1:8000/server';
 
@@ -68,8 +92,19 @@ export default function App() {
     <div className={classes.root}>
       <CssBaseline />
       <HeaderBar handleClickMenuBotton={handleToggleDrawer} />
-      <SearchDrawer clickSearch={query => search(query)}  drawerOpen={open} drawerWidth={drawerWidth}/>
-      <ImageGridList imageList={imageList} drawerOpen={open} drawerWidth={drawerWidth}/>
+
+      <SearchDrawer
+        stages={stages}
+        makeQuery={makeQuery}
+        addStage={addStage}
+        drawerOpen={open}
+        drawerWidth={drawerWidth} />
+
+      <ImageGridList
+        imageList={imageList}
+        drawerOpen={open}
+        drawerWidth={drawerWidth} />
+
     </div>
   )
 }
