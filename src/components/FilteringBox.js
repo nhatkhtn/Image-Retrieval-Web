@@ -8,6 +8,9 @@ import LocationsFiltering from './LocationsFiltering';
 import TabPanel from './TabPanel';
 import SwipeableViews from 'react-swipeable-views';
 import CaptionFiltering from './CaptionFiltering';
+import FormatQuoteIcon from '@material-ui/icons/FormatQuote';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 function a11yProps(index) {
   return {
@@ -24,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tab: {
     minWidth: 20,
-    fontSize: '0.75rem',
+    fontSize: '0.8rem',
     fontWeight: 600,
   },
   box: {
@@ -58,9 +61,9 @@ export default function FilteringBox(props) {
           variant="fullWidth"
           indicatorColor="primary"
           textColor="primary" >
-          <Tab label="Caption" {...a11yProps(0)} className={classes.tab} />
-          <Tab label="Locations" {...a11yProps(1)} className={classes.tab} />
-          <Tab label="Time" {...a11yProps(2)} className={classes.tab} />
+          <Tab label={<div ><FormatQuoteIcon fontSize='small' style={{verticalAlign: 'middle'}} /> Caption</div>} {...a11yProps(0)} className={classes.tab} />
+          <Tab label={<div><LocationOnIcon fontSize='small' style={{verticalAlign: 'middle'}}/> Locations</div>} {...a11yProps(1)} className={classes.tab} />
+          <Tab label={<div ><AccessTimeIcon fontSize='small' style={{verticalAlign: 'middle'}} /> Time</div>} {...a11yProps(2)} className={classes.tab} />
         </Tabs>
       </AppBar>
 
