@@ -28,7 +28,7 @@ export default function HeaderBar(props) {
         <IconButton
           color="inherit"
           aria-label="open drawer"
-          onClick={props.handleClickMenuBotton}
+          onClick={props.handleClickMenuButton}
           edge="start"
           className={classes.menuButton}>
 
@@ -38,7 +38,7 @@ export default function HeaderBar(props) {
 
         <Typography variant="h6" noWrap>
           Image Retrieval
-          </Typography>
+        </Typography>
 
       </Toolbar>
 

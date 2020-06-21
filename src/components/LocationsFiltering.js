@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,11 +12,15 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(3),
     },
   },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
 }));
 
-export default function SemanticLabels(props) {
+export default function LocationsFiltering(props) {
   const classes = useStyles();
-  const [semanticLabels, setSemanticLabels] = useState('')
+  const [locations, setLocations] = useState('')
   return (
     <div>
       <div className={classes.root}>
@@ -25,33 +28,32 @@ export default function SemanticLabels(props) {
         <Autocomplete
           multiple
           id="tags-outlined"
-          options={semantics}
+          options={locationList}
           getOptionLabel={(option) => option}
           filterSelectedOptions
           renderInput={(params) => (
             <TextField
               {...params}
               variant="outlined"
-              label="Semantics"
+              label="Locations"
               placeholder="Home, Work,..."
             />
           )}
-          onChange={(event,value)=>{setSemanticLabels(value)}}
-        />
-
+          onChange={(event, value) => { setLocations(value) }}/>
       </div>
-      <Grid container justify="center">
-        <div>
-          <Button variant="contained" color="primary" onClick={()=>props.clickFilter(semanticLabels)}>
-            Filter
-            </Button>
-        </div>
-      </Grid>
+
+      <div className={classes.buttonContainer}>
+        <Button variant="contained" color="primary" 
+          onClick={() => props.clickFilter(locations)}>
+          Filter
+        </Button>
+      </div>
+
     </div>
   );
 }
 
-const semantics = ['Home', 'Work', 'Verbena Avenue', 'Dublin City University (DCU)',
+const locationList = ['Home', 'Work', 'Verbena Avenue', 'Dublin City University (DCU)',
   'Science Gallery Café', 'The Helix', 'DCU School of Nursing',
   'Thunder Road Café', 'The Westin', 'Brown Thomas', 'Costa Coffee',
   'Starbucks', 'Dunnes Stores',

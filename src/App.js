@@ -2,20 +2,23 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import HeaderBar from './components/HeaderBar'
-import ImageGridList from './components/ImageGrid'
-import SearchDrawer from './components/SearchDrawer';
+import ImageGrid from './components/ImageGrid'
+import ControlDrawer from './components/ControlDrawer';
 import axios from 'axios';
 import update from 'immutability-helper';
 
-const drawerWidth = 450;
-
-const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-  },
-}));
-
+const drawerWidth = 500;
 const initialImageList = []
+
+const filterByCaption = (caption) => {
+  console.log(`Filter with caption ${caption}`)
+  return [1, 2, 3]
+}
+const filterByLocations = (locations) => {
+  console.log(`filter with locations ${locations}`)
+  return [4, 5, 6]
+}
+
 
 class Stage {
   constructor() {
@@ -24,19 +27,16 @@ class Stage {
   }
 }
 
-
-const queryWithQuerySentence = (query) => {
-  console.log(`make query with sentence ${query}`)
-  return [1, 2, 3]
-}
-const queryWithSemanticLabels = (labels) => {
-  console.log(`filter with labels ${labels}`)
-  return [4, 5, 6]
-}
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+  },
+}));
 
 export default function App() {
   const classes = useStyles();
 
+  // Hook handle drawer open or close
   const [open, setOpen] = React.useState(true);
   const handleToggleDrawer = () => {
     setOpen(!open);
@@ -45,62 +45,65 @@ export default function App() {
   const [stages, setStages] = useState([new Stage()])
   const [imageList, setImageList] = useState(initialImageList)
 
-
+  // Call when click Continue Filtering button
   const addStage = () => {
-    setStages(stages => ([...stages, new Stage()]))
+    setStages(stages => (update(stages, { $push: [new Stage()] })))
   }
-  const makeQuery = (index) => {
-    return (method) => {
-      if (method === 0) {
-        return (query,numImages) => {
-          const queryResult = queryWithQuerySentence(query)
-          setStages(update(stages, {
-            [index]: {
-              completed: { $set: true, },
-              method: { $set: method, },
-              query: { $set: query, },
-              numImages: { $set: numImages }
-            },
-            $splice:[[index+1,stages.length-index-1]]}))
-        }
+
+  // Call when click Filter button of any method
+  const handleFilter = (index) => (method) => {
+    // Filter by Caption
+    if (method === 0) {
+      return (caption, numImages) => {
+        const result = filterByCaption(caption)
+        setStages(update(stages, {
+          [index]: {
+            completed: { $set: true, },
+            method: { $set: method, },
+            caption: { $set: caption, },
+            numImages: { $set: numImages }
+          },
+          $splice: [[index + 1, stages.length - index - 1]]
+        }))
       }
-      else if (method === 1) {
-        return (labels) => {
-          const queryResult = queryWithSemanticLabels(labels)
-          setStages(update(stages, {
-            [index]: {
-              completed: { $set: true, },
-              method: { $set: method, },
-              labels: { $set: labels, },
-            },
-            $splice:[[index+1,stages.length-index-1]]}))
-        }
+    }
+    // Filter by Location
+    else if (method === 1) {
+      return (locations) => {
+        const result = filterByLocations(locations)
+        setStages(update(stages, {
+          [index]: {
+            completed: { $set: true, },
+            method: { $set: method, },
+            locations: { $set: locations, },
+          },
+          $splice: [[index + 1, stages.length - index - 1]]
+        }))
       }
     }
   }
 
-
   const serverAddress = 'http://127.0.0.1:8000/server';
 
-  const search = (query) => {
-    console.log(`search "${query}"`)
-    axios.get(`${serverAddress}/${query}/LSC/cosine/30/0`)
+  const search = (caption) => {
+    console.log(`search "${caption}"`)
+    axios.get(`${serverAddress}/${caption}/LSC/cosine/30/0`)
       .then(res => { setImageList(res.data.image) })
   }
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <HeaderBar handleClickMenuBotton={handleToggleDrawer} />
+      <HeaderBar handleClickMenuButton={handleToggleDrawer} />
 
-      <SearchDrawer
+      <ControlDrawer
         stages={stages}
-        makeQuery={makeQuery}
+        handleFilter={handleFilter}
         addStage={addStage}
         drawerOpen={open}
         drawerWidth={drawerWidth} />
 
-      <ImageGridList
+      <ImageGrid
         imageList={imageList}
         drawerOpen={open}
         drawerWidth={drawerWidth} />

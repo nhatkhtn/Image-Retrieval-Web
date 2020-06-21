@@ -1,12 +1,13 @@
+// Box to choose between different filter methods
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import SemanticLabels from './SemanticLabels';
+import LocationsFiltering from './LocationsFiltering';
 import TabPanel from './TabPanel';
 import SwipeableViews from 'react-swipeable-views';
-import QuerySentence from './QuerySentence';
+import CaptionFiltering from './CaptionFiltering';
 
 function a11yProps(index) {
   return {
@@ -34,9 +35,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function QueryTabs(props) {
+export default function FilteringBox(props) {
   const classes = useStyles();
   const theme = useTheme();
+
+  // hook for active tab
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -55,9 +58,9 @@ export default function QueryTabs(props) {
           variant="fullWidth"
           indicatorColor="primary"
           textColor="primary" >
-          <Tab label="Query sentence" {...a11yProps(0)} className={classes.tab} />
-          <Tab label="Semantic labels" {...a11yProps(1)} className={classes.tab} />
-          <Tab label="Time constraints" {...a11yProps(2)} className={classes.tab} />
+          <Tab label="Caption" {...a11yProps(0)} className={classes.tab} />
+          <Tab label="Locations" {...a11yProps(1)} className={classes.tab} />
+          <Tab label="Time" {...a11yProps(2)} className={classes.tab} />
         </Tabs>
       </AppBar>
 
@@ -65,15 +68,15 @@ export default function QueryTabs(props) {
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}>
-          <TabPanel value={value} index={0} className={classes.tabPanel}>
-            <QuerySentence clickSearch = {props.makeQueryOnStage(0)}/>
-          </TabPanel>
-          <TabPanel value={value} index={1} className={classes.tabPanel}>
-            <SemanticLabels clickFilter = {props.makeQueryOnStage(1)}/>
-          </TabPanel>
-          <TabPanel value={value} index={2} className={classes.tabPanel}>
-            Enter time range
-          </TabPanel>
+        <TabPanel value={value} index={0} className={classes.tabPanel}>
+          <CaptionFiltering clickFilter={props.handleFilterOnThisStage(0)} />
+        </TabPanel>
+        <TabPanel value={value} index={1} className={classes.tabPanel}>
+          <LocationsFiltering clickFilter={props.handleFilterOnThisStage(1)} />
+        </TabPanel>
+        <TabPanel value={value} index={2} className={classes.tabPanel}>
+          Enter time range
+        </TabPanel>
       </SwipeableViews>
 
     </div >
