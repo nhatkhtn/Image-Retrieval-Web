@@ -31,34 +31,28 @@ const useStyles = makeStyles({
 });
 
 
-function generateStageLabel(stage) {
-  if (!stage.completed) {
+function generateStepLabel(step) {
+  if (!step.completed) {
     return 'Choose a filter method'
   }
-  if (stage.method === 0) {
-    return `Get ${stage.numImages} images with caption "${stage.caption}"`
+  if (step.method === 0) {
+    return `Get ${step.numImages} images with caption "${step.caption}"`
   }
-  else if (stage.method === 1) {
-    return `Get images with location "${stage.locations}"`
+  else if (step.method === 1) {
+    return `Get images with location "${step.locations}"`
   }
 }
 
 export default function ControlDrawer(props) {
   const classes = useStyles(props);
 
-  const [activeStep, setActiveStep] = useState(0);
-
-  const handleStep = (step) => () => {
-    setActiveStep(step);
-  };
-
-  // When click Continue Filtering, set new stage active
+  // When click Continue Filtering, set new step active
   // Not so optimal
   useEffect(() => {
-    if (!props.stages[props.stages.length - 1].completed) {
-      setActiveStep(props.stages.length - 1)
+    if (!props.steps[props.steps.length - 1].completed) {
+      props.setActiveStep(props.steps.length - 1)
     }
-  })
+  },[props.steps.length])
 
   return (
     <Drawer
@@ -73,22 +67,22 @@ export default function ControlDrawer(props) {
       <Toolbar />
 
       <div className={classes.stepper}>
-        <Stepper nonLinear activeStep={activeStep} orientation="vertical">
-          {props.stages.map((stage, index) => (
+        <Stepper nonLinear activeStep={props.activeStep} orientation="vertical">
+          {props.steps.map((step, index) => (
             <Step key={index}>
-              <StepButton onClick={handleStep(index)}>
-                {generateStageLabel(stage)}
+              <StepButton onClick={()=>props.setActiveStep(index)}>
+                {generateStepLabel(step)}
               </StepButton>
               <StepContent>
-                <FilteringBox handleFilterOnThisStage={props.handleFilter(index)} />
+                <FilteringBox handleFilterOnThisStep={props.handleFilter(index)} />
               </StepContent>
             </Step>
           ))}
         </Stepper>
 
-        <div className={clsx(classes.buttonContainer, { [classes.hide]: !props.stages[activeStep].completed })}>
+        <div className={clsx(classes.buttonContainer, { [classes.hide]: !props.steps[props.steps.length-1].completed })}>
           <Button variant="contained" color="primary"
-            onClick={() => { props.addStage(activeStep) }}>
+            onClick={() => { props.addStep(props.activeStep) }}>
             Continue Filtering
             </Button>
         </div>

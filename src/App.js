@@ -9,6 +9,7 @@ import update from 'immutability-helper';
 
 const drawerWidth = 500;
 const initialImageList = []
+const imageList=[]
 
 const filterByCaption = (caption) => {
   console.log(`Filter with caption ${caption}`)
@@ -20,7 +21,7 @@ const filterByLocations = (locations) => {
 }
 
 
-class Stage {
+class Step {
   constructor() {
     this.completed = false;
     this.result = [];
@@ -42,12 +43,13 @@ export default function App() {
     setOpen(!open);
   }
 
-  const [stages, setStages] = useState([new Stage()])
-  const [imageList, setImageList] = useState(initialImageList)
+  const [steps, setSteps] = useState([new Step()])
+  // imageList of active step, that display in ImageGrid
+  const [activeStep, setActiveStep] = useState(0)
 
   // Call when click Continue Filtering button
-  const addStage = () => {
-    setStages(stages => (update(stages, { $push: [new Stage()] })))
+  const addStep = () => {
+    setSteps(steps => (update(steps, { $push: [new Step()] })))
   }
 
   // Call when click Filter button of any method
@@ -55,15 +57,16 @@ export default function App() {
     // Filter by Caption
     if (method === 0) {
       return (caption, numImages) => {
-        const result = filterByCaption(caption)
-        setStages(update(stages, {
+        const result = filterByCaption(caption,numImages)
+        setSteps(update(steps, {
           [index]: {
             completed: { $set: true, },
             method: { $set: method, },
             caption: { $set: caption, },
-            numImages: { $set: numImages }
+            numImages: { $set: numImages },
+            result: {$set: result}
           },
-          $splice: [[index + 1, stages.length - index - 1]]
+          $splice: [[index + 1, steps.length - index - 1]]
         }))
       }
     }
@@ -71,25 +74,37 @@ export default function App() {
     else if (method === 1) {
       return (locations) => {
         const result = filterByLocations(locations)
-        setStages(update(stages, {
+        setSteps(update(steps, {
           [index]: {
             completed: { $set: true, },
             method: { $set: method, },
             locations: { $set: locations, },
+            result: {$set: result}
           },
-          $splice: [[index + 1, stages.length - index - 1]]
+          $splice: [[index + 1, steps.length - index - 1]]
         }))
       }
     }
   }
 
-  const serverAddress = 'http://127.0.0.1:8000/server';
-
-  const search = (caption) => {
-    console.log(`search "${caption}"`)
-    axios.get(`${serverAddress}/${caption}/LSC/cosine/30/0`)
-      .then(res => { setImageList(res.data.image) })
+  const getActiveImageList = (activeStep) => {
+    if (steps[activeStep].completed) 
+      return steps[activeStep].result;
+    else {
+      if (activeStep===0) 
+        return initialImageList;
+      else
+        return steps[activeStep-1].result;
+    }
   }
+
+  // const serverAddress = 'http://127.0.0.1:8000/server';
+
+  // const search = (caption) => {
+  //   console.log(`search "${caption}"`)
+  //   axios.get(`${serverAddress}/${caption}/LSC/cosine/30/0`)
+  //     .then(res => { setImageList(res.data.image) })
+  // }
 
   return (
     <div className={classes.root}>
@@ -97,14 +112,16 @@ export default function App() {
       <HeaderBar handleClickMenuButton={handleToggleDrawer} />
 
       <ControlDrawer
-        stages={stages}
+        steps={steps}
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
         handleFilter={handleFilter}
-        addStage={addStage}
+        addStep={addStep}
         drawerOpen={open}
         drawerWidth={drawerWidth} />
 
       <ImageGrid
-        imageList={imageList}
+        imageList={getActiveImageList(activeStep)}
         drawerOpen={open}
         drawerWidth={drawerWidth} />
 

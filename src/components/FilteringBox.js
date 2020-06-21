@@ -51,6 +51,7 @@ export default function FilteringBox(props) {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+
   return (
     <div className={classes.root}>
 
@@ -61,9 +62,9 @@ export default function FilteringBox(props) {
           variant="fullWidth"
           indicatorColor="primary"
           textColor="primary" >
-          <Tab label={<div ><FormatQuoteIcon fontSize='small' style={{verticalAlign: 'middle'}} /> Caption</div>} {...a11yProps(0)} className={classes.tab} />
+          <Tab label={<div><FormatQuoteIcon fontSize='small' style={{verticalAlign: 'middle'}} /> Caption</div>} {...a11yProps(0)} className={classes.tab} />
           <Tab label={<div><LocationOnIcon fontSize='small' style={{verticalAlign: 'middle'}}/> Locations</div>} {...a11yProps(1)} className={classes.tab} />
-          <Tab label={<div ><AccessTimeIcon fontSize='small' style={{verticalAlign: 'middle'}} /> Time</div>} {...a11yProps(2)} className={classes.tab} />
+          <Tab label={<div><AccessTimeIcon fontSize='small' style={{verticalAlign: 'middle'}} /> Time</div>} {...a11yProps(2)} className={classes.tab} />
         </Tabs>
       </AppBar>
 
@@ -72,10 +73,10 @@ export default function FilteringBox(props) {
         index={value}
         onChangeIndex={handleChangeIndex}>
         <TabPanel value={value} index={0} className={classes.tabPanel}>
-          <CaptionFiltering clickFilter={props.handleFilterOnThisStage(0)} />
+          <CaptionFiltering clickFilter={props.handleFilterOnThisStep(0)} />
         </TabPanel>
         <TabPanel value={value} index={1} className={classes.tabPanel}>
-          <LocationsFiltering clickFilter={props.handleFilterOnThisStage(1)} />
+          <LocationsFiltering clickFilter={props.handleFilterOnThisStep(1)} />
         </TabPanel>
         <TabPanel value={value} index={2} className={classes.tabPanel}>
           Enter time range
