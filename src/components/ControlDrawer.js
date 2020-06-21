@@ -36,10 +36,10 @@ function generateStepLabel(step) {
     return 'Choose a filter method'
   }
   if (step.method === 0) {
-    return `Get ${step.numImages} images with caption "${step.caption}"`
+    return `Get ${step.content.numImages} images with caption "${step.content.caption}"`
   }
   else if (step.method === 1) {
-    return `Get images with location "${step.locations}"`
+    return `Get images with location "${step.content.locations}"`
   }
 }
 

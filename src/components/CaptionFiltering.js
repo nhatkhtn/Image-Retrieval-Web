@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CaptionFiltering(props) {
 	const classes = useStyles();
 	const [caption, setCaption] = useState('');
-	const [numImages, setNumImages] = useState(1000);
+	const [numImages, setNumImages] = useState(100);
 
 	return (
 		<div>

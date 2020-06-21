@@ -41,14 +41,13 @@ export default function ImageGrid(props) {
       <Toolbar />
 
       <div className={classes.root}>
-        {/* <GridList cellHeight={'auto'} className={classes.gridList} cols={0}> */}
+        <GridList cellHeight={'auto'} className={classes.gridList} cols={0}>
           {props.imageList.map((image) => (
-            <p>{image}</p>
-            //<GridListTile key={image} >
-            //  <img src={`/LSC_Thumbnail/${image}`} alt={image}/>
-            //</GridListTile>
+            <GridListTile key={image} >
+              <img src={`/LSC_Thumbnail/${image}`} alt={image}/>
+            </GridListTile>
           ))}
-        {/* </GridList> */}
+        </GridList>
       </div>
 
     </div>
