@@ -21,6 +21,22 @@ const useStyles = makeStyles((theme) => ({
 export default function LocationsFiltering(props) {
   const classes = useStyles();
   const [locations, setLocations] = useState('')
+  const [invalidInput, setInvalidInput] = useState(false);
+	const [helperText, setHelperText] = useState('')
+	const inputRef = React.createRef();
+
+	const handleClick = () =>{
+		if (locations.length===0) {
+			setInvalidInput(true);
+			setHelperText('Choose at least one location.')
+			inputRef.current.focus();
+		}
+		else{
+			setInvalidInput(false);
+			setHelperText('')
+			props.clickFilter(locations)
+		}
+	}
   return (
     <div>
       <div className={classes.root}>
@@ -37,6 +53,9 @@ export default function LocationsFiltering(props) {
               variant="outlined"
               label="Locations"
               placeholder="Home, Work,..."
+              error={invalidInput}
+              inputRef={inputRef}
+              helperText={helperText}
             />
           )}
           onChange={(event, value) => { setLocations(value) }}/>
@@ -44,7 +63,7 @@ export default function LocationsFiltering(props) {
 
       <div className={classes.buttonContainer}>
         <Button variant="contained" color="primary" 
-          onClick={() => props.clickFilter(locations)}>
+          onClick={handleClick}>
           Filter
         </Button>
       </div>

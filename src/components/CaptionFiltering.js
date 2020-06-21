@@ -27,15 +27,34 @@ export default function CaptionFiltering(props) {
 	const classes = useStyles();
 	const [caption, setCaption] = useState('');
 	const [numImages, setNumImages] = useState(100);
+	const [invalidInput, setInvalidInput] = useState(false);
+	const [helperText, setHelperText] = useState('')
+	const inputRef = React.createRef();
+
+	const handleClick = () =>{
+		if (caption==="") {
+			setInvalidInput(true);
+			setHelperText('Caption sentence cannot be empty')
+			inputRef.current.focus();
+		}
+		else{
+			setInvalidInput(false);
+			setHelperText('')
+			props.clickFilter(caption, numImages)
+		}
+	}
 
 	return (
 		<div>
 			<div className={classes.search}>
 				<TextField
-					fullWidth multiline
+					fullWidth multiline autoFocus
 					id="outlined-search" label="Caption sentence" type="search"
+					helperText={helperText}
 					variant="outlined"
 					value={caption}
+					error={invalidInput}
+					inputRef={inputRef} 
 					onChange={(e) => setCaption(e.target.value)}
 				/>
 			</div>
@@ -51,7 +70,7 @@ export default function CaptionFiltering(props) {
 
 			<div className={classes.buttonContainer}>
 				<Button variant="contained" color="primary"
-					onClick={() => { props.clickFilter(caption, numImages) }}>
+					onClick={ handleClick }>
 					Filter
         </Button>
 			</div>

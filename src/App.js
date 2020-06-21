@@ -9,24 +9,8 @@ import update from 'immutability-helper';
 
 const drawerWidth = 500;
 const initialImageList = []
-const imageList = []
 
 const serverAddress = 'http://127.0.0.1:8000/server';
-
-const search = (caption) => {
-
-}
-
-// const filterByCaption = (caption) => {
-//   console.log(`search "${caption}"`)
-//   axios.get(`${serverAddress}/${caption}/LSC/cosine/30/0`)
-//     .then(res => { setImageList(res.data.image) })
-// }
-const filterByLocations = (locations) => {
-  console.log(`filter with locations ${locations}`)
-  return [4, 5, 6]
-}
-
 
 class Step {
   constructor() {
