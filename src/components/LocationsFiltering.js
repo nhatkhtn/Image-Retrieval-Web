@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LocationsFiltering(props) {
   const classes = useStyles();
-  const [locations, setLocations] = useState('')
+  const [locations, setLocations] = useState(props.locations)
   const [invalidInput, setInvalidInput] = useState(false);
 	const [helperText, setHelperText] = useState('')
 	const inputRef = React.createRef();
@@ -47,6 +47,7 @@ export default function LocationsFiltering(props) {
           options={locationList}
           getOptionLabel={(option) => option}
           filterSelectedOptions
+          defaultValue={locations}
           renderInput={(params) => (
             <TextField
               {...params}

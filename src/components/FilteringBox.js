@@ -43,7 +43,7 @@ export default function FilteringBox(props) {
   const theme = useTheme();
 
   // hook for active tab
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(props.step.method || 0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -73,10 +73,14 @@ export default function FilteringBox(props) {
         index={value}
         onChangeIndex={handleChangeIndex}>
         <TabPanel value={value} index={0} className={classes.tabPanel}>
-          <CaptionFiltering clickFilter={props.handleFilterOnThisStep(props.methods.caption)} />
+          <CaptionFiltering 
+            caption={props.step.content.caption || ''}
+            clickFilter={props.handleFilterOnThisStep(props.methods.caption)} />
         </TabPanel>
         <TabPanel value={value} index={1} className={classes.tabPanel}>
-          <LocationsFiltering clickFilter={props.handleFilterOnThisStep(props.methods.locations)} />
+          <LocationsFiltering 
+            locations = {props.step.content.locations || []}
+            clickFilter={props.handleFilterOnThisStep(props.methods.locations)} />
         </TabPanel>
         <TabPanel value={value} index={2} className={classes.tabPanel}>
           Enter time range

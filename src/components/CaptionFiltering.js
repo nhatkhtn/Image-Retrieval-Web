@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CaptionFiltering(props) {
 	const classes = useStyles();
-	const [caption, setCaption] = useState('');
+	const [caption, setCaption] = useState(props.caption);
 	const [numImages, setNumImages] = useState(100);
 	const [invalidInput, setInvalidInput] = useState(false);
 	const [helperText, setHelperText] = useState('')

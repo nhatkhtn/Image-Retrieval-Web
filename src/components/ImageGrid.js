@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
@@ -37,6 +37,10 @@ const useStyles = makeStyles(theme => ({
   },
   hide: {
     display: 'none',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'center'
   }
 }));
 
@@ -53,14 +57,14 @@ export default function ImageGrid(props) {
     setPage(value)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     setPage(1)
-    setShowedImages(props.imageList.slice((page-1)*numImagesPerPage, page*numImagesPerPage))
-  },[props.imageList])
+    setShowedImages(props.imageList.slice((page - 1) * numImagesPerPage, page * numImagesPerPage))
+  }, [props.imageList])
 
-  useEffect(()=>{
-    setShowedImages(props.imageList.slice((page-1)*numImagesPerPage, page*numImagesPerPage))
-  },[page])
+  useEffect(() => {
+    setShowedImages(props.imageList.slice((page - 1) * numImagesPerPage, page * numImagesPerPage))
+  }, [page])
 
   const [state, setState] = useState(initialState);
   const [selectedImage, setSelectedImage] = useState(null)
@@ -80,23 +84,26 @@ export default function ImageGrid(props) {
 
   const handleSearchSimilar = (image) => {
     handleClose();
-    props.searchSimilarImages(image,100)
+    props.searchSimilarImages(image, 100)
   }
 
   return (
     <div className={clsx(classes.content, {
-      [classes.contentShift]: props.drawerOpen})}>
+      [classes.contentShift]: props.drawerOpen
+    })}>
       <Toolbar />
-      <Pagination size="large" showFirstButton showLastButton
-        count={Math.ceil(props.imageList.length/numImagesPerPage)} 
-        page={page} onChange={handleChange}
-        className={clsx({[classes.hide]: props.imageList.length===0})}/>
+      <div className={classes.paginationContainer}>
+        <Pagination size="large" showFirstButton showLastButton
+          count={Math.ceil(props.imageList.length / numImagesPerPage)}
+          page={page} onChange={handleChange}
+          className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
+      </div>
 
       <div className={classes.root}>
         <GridList cellHeight={'auto'} className={classes.gridList} cols={0}>
           {showedImages.map((image) => (
             <GridListTile key={image} onContextMenu={handleContextMenu(image)}>
-              <img src={`/LSC_Thumbnail/${image}`} alt={image}/>
+              <img src={`/LSC_Thumbnail/${image}`} alt={image} />
             </GridListTile>
           ))}
         </GridList>
@@ -111,16 +118,17 @@ export default function ImageGrid(props) {
           state.mouseY !== null && state.mouseX !== null
             ? { top: state.mouseY, left: state.mouseX }
             : undefined
-        }
-      >
-        <MenuItem onClick={()=>{handleSearchSimilar(selectedImage)}}>Search Similar Images</MenuItem>
+        }>
+        <MenuItem onClick={() => { handleSearchSimilar(selectedImage) }}>Search Similar Images</MenuItem>
       </Menu>
 
-      <Pagination size="large" showFirstButton showLastButton
-        count={Math.ceil(props.imageList.length/numImagesPerPage)} 
-        page={page} onChange={handleChange}
-        className={clsx({[classes.hide]: props.imageList.length===0})}/>
-        
+      <div className={classes.paginationContainer}>
+        <Pagination size="large" showFirstButton showLastButton
+          count={Math.ceil(props.imageList.length / numImagesPerPage)}
+          page={page} onChange={handleChange}
+          className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
+      </div>
+
     </div>
   );
 }

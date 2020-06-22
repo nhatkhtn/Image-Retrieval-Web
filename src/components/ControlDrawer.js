@@ -84,7 +84,10 @@ export default function ControlDrawer(props) {
                   {generateStepLabel(step)}
                 </StepButton>
                 <StepContent>
-                  <FilteringBox methods={props.methods} handleFilterOnThisStep={props.handleFilter(index)} />
+                  <FilteringBox 
+                    step={step}
+                    methods={props.methods} 
+                    handleFilterOnThisStep={props.handleFilter(index)} />
                 </StepContent>
               </Step>)
           ))}
