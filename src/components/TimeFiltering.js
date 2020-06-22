@@ -13,11 +13,6 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		flexWrap: 'wrap',
 	},
-	textField: {
-		marginLeft: theme.spacing(1),
-		marginRight: theme.spacing(1),
-		width: 110,
-	},
 	text: {
 		display: 'inline-flex',
 		margin: '0px 0px 20px 0px',
@@ -31,79 +26,115 @@ const useStyles = makeStyles((theme) => ({
 		marginLeft: -8,
 	},
 	buttonContainer: {
-    display: 'flex',
+		display: 'flex',
 		justifyContent: 'center',
-		marginTop:20
-  },
+		marginTop: 20
+	},
+	firstOption: {
+		marginTop:10,
+	},
+	contentFirstOption: { 
+		display: 'inline-flex', 
+		alignItems: 'center', 
+		marginLeft: '30px'
+	},
+	timePicker: {
+		marginLeft: theme.spacing(2),
+		marginRight: theme.spacing(2),
+		width: 110,
+	},
+	secondOption: {
+		marginTop:20,
+	},
+	contentSecondOption: { 
+		display: 'inline-flex', 
+		alignItems: 'center', 
+		margin: '-20px 0px 0px 30px',
+	 }
 }))
 export default function TimeFiltering(props) {
 	const classes = useStyles();
-	const [value, setValue] = React.useState('female');
+	const [option, setOption] = React.useState(
+		props.step.method===props.methods.timeBefore?
+		props.methods.timeBefore.toString():props.methods.timeRange.toString());
 
-	const handleChange = (event) => {
-		setValue(event.target.value);
-	};
+	const [timeBegin,setTimeBegin] = React.useState(props.step.content.timeBegin || "07:30")
+	const [timeEnd,setTimeEnd] = React.useState(props.step.content.timeEnd || "07:30")
+	const [minutes, setMinutes] = React.useState(props.step.content.minutes || 30)
+
+	const handleClick = ()=>{
+		if (option===props.methods.timeRange.toString())
+			props.clickFilter(props.methods.timeRange)(timeBegin,timeEnd)
+		else
+			props.clickFilter(props.methods.timeBefore)(minutes)
+	}
+	
 	return (
 		<div>
-		<FormControl component="fieldset">
-			<RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-			<div style={{marginTop:10}}>
-				<FormControlLabel value="fdsfasdf" control={<Radio color="primary"/>} label='Filter images taken within a time range' />
-				<div style={{ display: 'inline-flex', alignItems: 'center', marginLeft: 30 }}>
-					<Typography> From </Typography>
-					<form className={classes.container} noValidate>
-						<TextField
-							id="time"
-							type="time"
-							defaultValue="07:30"
-							className={classes.textField}
-							InputLabelProps={{
-								shrink: true,
-							}}
-							inputProps={{
-								step: 300, // 5 min
-							}}
-						/>
-					</form>
-					<Typography> to </Typography>
-					<form className={classes.container} noValidate>
-						<TextField
-							id="time"
-							type="time"
-							defaultValue="07:30"
-							className={classes.textField}
-							InputLabelProps={{
-								shrink: true,
-							}}
-							inputProps={{
-								step: 300, // 5 min
-							}}
-						/>
-					</form>
-				</div>
-				</div>
-			<div style={{marginTop:20}}>
+			<FormControl component="fieldset">
+				<RadioGroup value={option} onChange={(e)=>{setOption(e.target.value)}}>
 
-				<FormControlLabel value="male" control={<Radio color="primary"/>} label='Get images taken before these images' />
-				<div style={{ display: 'inline-flex', alignItems: 'center', marginLeft: 30,marginTop:-15 }}>
+					<div className={classes.firstOption}>
+						<FormControlLabel value={props.methods.timeRange.toString()}
+							control={<Radio color="primary" />} 
+							disabled={props.atFirstStep}
+							label='Filter images taken within a time range' />
+						<div className={classes.contentFirstOption}>
+							<Typography> From </Typography>
+							<form className={classes.container} noValidate>
+								<TextField type="time" 
+									value={timeBegin}
+									inputProps={{style: { textAlign: 'center' }}}
+									className={classes.timePicker}
+									InputLabelProps={{ shrink: true,}}
+									inputProps={{ step: 300, }}
+									disabled={props.atFirstStep}
+									onChange={(e)=>setTimeBegin(e.target.value)}
+								/>
+							</form>
+							<Typography> to </Typography>
+							<form className={classes.container} noValidate>
+								<TextField type="time" 
+									value={timeEnd}
+									inputProps={{style: { textAlign: 'center' }}}
+									className={classes.timePicker}
+									InputLabelProps={{ shrink: true,}}
+									inputProps={{ step: 300, }}
+									disabled={props.atFirstStep}
+									onChange={(e)=>setTimeEnd(e.target.value)}
+								/>
+							</form>
+						</div>
+					</div>
 
-					<Typography>Up to </Typography>
-					<TextField type="number"
-						className={classes.numInput}
-						defaultValue={30}
-						onChange={(e) => { }} />
-					<Typography > minutes</Typography>
-				</div>
-				</div>
-						
-			</RadioGroup>
-		</FormControl>
-		<div className={classes.buttonContainer}>
-        <Button variant="contained" color="primary" 
-          onClick={()=>{}}>
-          Filter
+					<div className={classes.secondOption}>
+						<FormControlLabel value={props.methods.timeBefore.toString()} 
+							control={<Radio color="primary" />} 
+							disabled = {!props.enableTimeBefore}
+							label='Get images taken before these images' />
+						<div className={classes.contentSecondOption}>
+							<Typography>Up to </Typography>
+							<TextField type="number"
+								disabled = {!props.enableTimeBefore}
+								inputProps={{style: { textAlign: 'center' }}}
+								className={classes.numInput}
+								value={minutes}
+								onChange={(e)=>setMinutes(e.target.value)}/>
+							<Typography > minutes</Typography>
+						</div>
+					</div>
+
+				</RadioGroup>
+			</FormControl>
+
+			<div className={classes.buttonContainer}>
+				<Button variant="contained" color="primary"
+					onClick={handleClick}
+					disabled={props.atFirstStep}>
+					Filter
         </Button>
-      </div>
+			</div> 
+
 		</div>
 	)
 }

@@ -13,7 +13,7 @@ const initialImageList = []
 const serverAddress = 'http://127.0.0.1:8000/server';
 
 class Step {
-  constructor(completed = false, method = '', content = {}, result = []) {
+  constructor(completed = false, method = null, content = {}, result = []) {
     this.completed = completed;
     this.method = method;
     this.content = content;
@@ -62,12 +62,14 @@ export default function App() {
     setActiveStep(steps.length - 1)
   }, [steps])
 
+  // TODO: set this variable global
   const methods = {
     caption: 0,
     locations: 1,
-    time: 2,
-    similarImages: 3,
-    nearbyImages: 4,
+    timeRange: 2,
+    timeBefore: 3,
+    similarImages: 4,
+    adjacentImages: 5,
   }
 
   const filterByCaption = (index) => (caption, numImages) => {
@@ -113,6 +115,32 @@ export default function App() {
     })
   }
 
+  const filterByTimeRangeOnSubset = (index) => (timeBegin,timeEnd) => {
+    axios({
+      method: 'POST',
+      url: `${serverAddress}/query_by_time_range_on_subset`,
+      data: {
+        subset: steps[index - 1].result,
+        timeBegin: timeBegin,
+        timeEnd: timeEnd,
+      }
+    }).then(res => {
+      updateSteps(index, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
+    })
+  }
+
+  const queryImagesBefore = (index) => (minutes) => {
+    axios({
+      method: 'POST',
+      url: `${serverAddress}/query_images_before`,
+      data: {
+        subset: steps[index - 1].result,
+        minutes: minutes
+      }
+    }).then(res => {
+      updateSteps(index, methods.timeBefore, { minutes:minutes }, res.data.filenames)
+    })
+  }
   // Call when click Filter button of any method
   const handleFilter = (index) => (method) => {
     if (index === 0) {
@@ -129,6 +157,12 @@ export default function App() {
       }
       else if (method === methods.locations) {
         return filterByLocationsOnSubset(index)
+      }
+      else if (method === methods.timeRange) {
+        return filterByTimeRangeOnSubset(index)
+      }
+      else if (method === methods.timeBefore) {
+        return queryImagesBefore(index)
       }
     }
   }

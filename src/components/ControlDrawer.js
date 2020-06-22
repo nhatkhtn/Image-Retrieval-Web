@@ -48,6 +48,12 @@ export default function ControlDrawer(props) {
     else if (step.method === props.methods.locations) {
       return `Get images with location "${step.content.locations}"`
     }
+    else if (step.method === props.methods.timeRange) {
+      return `Get images taken from ${step.content.timeBegin} to ${step.content.timeEnd}`
+    }
+    else if (step.method === props.methods.timeBefore) {
+      return `Get images taken before these images up to ${step. content.minutes} minutes`
+    }
     else if (step.method === props.methods.similarImages) {
       return `Get images similar with image ${step.content.image}`
     }
@@ -87,7 +93,10 @@ export default function ControlDrawer(props) {
                   <FilteringBox 
                     step={step}
                     methods={props.methods} 
-                    handleFilterOnThisStep={props.handleFilter(index)} />
+                    handleFilterOnThisStep={props.handleFilter(index)}
+                    atFirstStep={index===0}
+                    afterFilterLocations={index===1 && props.steps[0].method===props.methods.locations}
+                    />
                 </StepContent>
               </Step>)
           ))}

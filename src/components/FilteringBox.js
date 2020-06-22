@@ -44,7 +44,9 @@ export default function FilteringBox(props) {
   const theme = useTheme();
 
   // hook for active tab
-  const [value, setValue] = React.useState(props.step.method || 0);
+  const [value, setValue] = React.useState(
+    props.step.method===props.methods.timeBefore?
+    props.methods.timeRange:(props.step.method || props.methods.caption));
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -84,7 +86,13 @@ export default function FilteringBox(props) {
             clickFilter={props.handleFilterOnThisStep(props.methods.locations)} />
         </TabPanel>
         <TabPanel value={value} index={2} className={classes.tabPanel}>
-          <TimeFiltering />
+          <TimeFiltering
+            step={props.step}
+            clickFilter={props.handleFilterOnThisStep} 
+            methods={props.methods}
+            atFirstStep={props.atFirstStep}
+            enableTimeBefore={props.afterFilterLocations}
+            />
         </TabPanel>
       </SwipeableViews>
 

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 	text: {
 		display: 'inline-flex',
 		margin: '0px 0px 20px 5px',
-		alignItems:'center',
+		alignItems: 'center',
 	},
 	numInput: {
 		width: 60,
@@ -31,13 +31,13 @@ export default function CaptionFiltering(props) {
 	const [helperText, setHelperText] = useState('')
 	const inputRef = React.createRef();
 
-	const handleClick = () =>{
-		if (caption==="") {
+	const handleClick = () => {
+		if (caption === "") {
 			setInvalidInput(true);
 			setHelperText('Caption sentence cannot be empty')
 			inputRef.current.focus();
 		}
-		else{
+		else {
 			setInvalidInput(false);
 			setHelperText('')
 			props.clickFilter(caption, numImages)
@@ -54,7 +54,7 @@ export default function CaptionFiltering(props) {
 					variant="outlined"
 					value={caption}
 					error={invalidInput}
-					inputRef={inputRef} 
+					inputRef={inputRef}
 					onChange={(e) => setCaption(e.target.value)}
 				/>
 			</div>
@@ -62,6 +62,7 @@ export default function CaptionFiltering(props) {
 			<div className={classes.text}>
 				<Typography >Get the top </Typography>
 				<TextField type="number"
+					inputProps={{ style: { textAlign: 'center' } }}
 					className={classes.numInput}
 					defaultValue={numImages}
 					onChange={(e) => setNumImages(e.target.value)} />
@@ -70,7 +71,7 @@ export default function CaptionFiltering(props) {
 
 			<div className={classes.buttonContainer}>
 				<Button variant="contained" color="primary"
-					onClick={ handleClick }>
+					onClick={handleClick}>
 					Filter
         </Button>
 			</div>
