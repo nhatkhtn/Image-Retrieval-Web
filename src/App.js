@@ -35,7 +35,6 @@ export default function App() {
   }
 
   const [steps, setSteps] = useState([new Step()])
-  // imageList of active step, that display in ImageGrid
   const [activeStep, setActiveStep] = useState(0)
 
   // Call when click Continue Filtering button
@@ -119,12 +118,9 @@ export default function App() {
   }
 
   const getActiveImageList = (activeStep) => {
-    if (steps[activeStep].completed)
+    if (activeStep===0 || steps[activeStep].completed)
       return steps[activeStep].result;
     else {
-      if (activeStep === 0)
-        return initialImageList;
-      else
         return steps[activeStep - 1].result;
     }
   }
