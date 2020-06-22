@@ -8,6 +8,7 @@ import LocationsFiltering from './LocationsFiltering';
 import TabPanel from './TabPanel';
 import SwipeableViews from 'react-swipeable-views';
 import CaptionFiltering from './CaptionFiltering';
+import TimeFiltering from './TimeFiltering';
 import FormatQuoteIcon from '@material-ui/icons/FormatQuote';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -83,7 +84,7 @@ export default function FilteringBox(props) {
             clickFilter={props.handleFilterOnThisStep(props.methods.locations)} />
         </TabPanel>
         <TabPanel value={value} index={2} className={classes.tabPanel}>
-          Enter time range
+          <TimeFiltering />
         </TabPanel>
       </SwipeableViews>
 
