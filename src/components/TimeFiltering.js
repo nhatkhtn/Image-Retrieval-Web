@@ -47,7 +47,7 @@ export default function TimeFiltering(props) {
 		<div>
 		<FormControl component="fieldset">
 			<RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-			<div style={{marginTop:20}}>
+			<div style={{marginTop:10}}>
 				<FormControlLabel value="fdsfasdf" control={<Radio color="primary"/>} label='Filter images taken within a time range' />
 				<div style={{ display: 'inline-flex', alignItems: 'center', marginLeft: 30 }}>
 					<Typography> From </Typography>
@@ -85,7 +85,7 @@ export default function TimeFiltering(props) {
 			<div style={{marginTop:20}}>
 
 				<FormControlLabel value="male" control={<Radio color="primary"/>} label='Get images taken before these images' />
-				<div style={{ display: 'inline-flex', alignItems: 'center', marginLeft: 30,marginTop:-10 }}>
+				<div style={{ display: 'inline-flex', alignItems: 'center', marginLeft: 30,marginTop:-15 }}>
 
 					<Typography>Up to </Typography>
 					<TextField type="number"

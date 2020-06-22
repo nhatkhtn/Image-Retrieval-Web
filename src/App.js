@@ -135,7 +135,7 @@ export default function App() {
 
   const searchSimilarImages = (image, numImages = 100) => {
     const path = image.split('/')
-    axios.get(`${serverAddress}/query_by_similar_image/${path[0]}&${path[1]}/${numImages}`)
+    axios.get(`${serverAddress}/query_similar_images/${path[0]}&${path[1]}/${numImages}`)
       .then(res => {
         setSteps(update(steps, {
           $splice: [[steps[activeStep].completed ? activeStep + 1 : activeStep, steps.length - activeStep - 1]],
