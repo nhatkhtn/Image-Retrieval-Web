@@ -8,7 +8,8 @@ import Pagination from '@material-ui/lab/Pagination';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const numImagesPerPage = 12;
+const numImagesPerPageDrawerClose = 12;
+const numImagesPerPageDrawerOpen = 24;
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -51,25 +52,33 @@ const initialState = {
 
 export default function ImageGrid(props) {
   const classes = useStyles(props);
+  const [numImagesPerPage, setNumImagesPerPage] = useState(1)
   const [showedImages, setShowedImages] = useState([])
   const [page, setPage] = useState(1)
   const handleChange = (event, value) => {
     setPage(value)
   }
+  
+  useEffect(()=>{
+    if (props.drawerOpen)
+      setNumImagesPerPage(numImagesPerPageDrawerClose);
+    else
+      setNumImagesPerPage(numImagesPerPageDrawerOpen);
+  },[props.drawerOpen])
 
   useEffect(() => {
     setPage(1)
     setShowedImages(props.imageList.slice((page - 1) * numImagesPerPage, page * numImagesPerPage))
-  }, [props.imageList])
+  }, [props.imageList,numImagesPerPage])
 
   useEffect(() => {
     setShowedImages(props.imageList.slice((page - 1) * numImagesPerPage, page * numImagesPerPage))
-  }, [page])
+  }, [page,numImagesPerPage])
 
   const [state, setState] = useState(initialState);
   const [selectedImage, setSelectedImage] = useState(null)
 
-  const handleContextMenu = (image) => (event) => {
+  const handleClick = (image) => (event) => {
     event.preventDefault();
     setState({
       mouseX: event.clientX - 2,
@@ -102,7 +111,7 @@ export default function ImageGrid(props) {
       <div className={classes.root}>
         <GridList cellHeight={'auto'} className={classes.gridList} cols={0}>
           {showedImages.map((image) => (
-            <GridListTile key={image} onContextMenu={handleContextMenu(image)}>
+            <GridListTile key={image} onClick={handleClick(image)}>
               <img src={`/LSC_Thumbnail/${image}`} alt={image} />
             </GridListTile>
           ))}
