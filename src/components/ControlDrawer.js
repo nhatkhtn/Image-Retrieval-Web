@@ -28,32 +28,30 @@ const useStyles = makeStyles({
   hide: {
     display: 'none',
   },
+  imageContainer: {
+    display: 'flex',
+    justifyContent: 'center'
+  }
 });
 
-
-function generateStepLabel(step) {
-  if (!step.completed) {
-    return 'Choose a filter method'
-  }
-  if (step.method === 0) {
-    return `Get ${step.content.numImages} images with caption "${step.content.caption}"`
-  }
-  else if (step.method === 1) {
-    return `Get images with location "${step.content.locations}"`
-  }
-}
 
 export default function ControlDrawer(props) {
   const classes = useStyles(props);
 
-  // When click Continue Filtering, set new step active
-  // Not so optimal
-  useEffect(() => {
-    if (!props.steps[props.steps.length - 1].completed) {
-      props.setActiveStep(props.steps.length - 1)
+  function generateStepLabel(step) {
+    if (!step.completed) {
+      return 'Choose a filter method'
     }
-  },[props.steps.length])
-
+    if (step.method === props.methods.caption) {
+      return `Get ${step.content.numImages} images with caption "${step.content.caption}"`
+    }
+    else if (step.method === props.methods.locations) {
+      return `Get images with location "${step.content.locations}"`
+    }
+    else if (step.method === props.methods.similarImages) {
+      return `Get images similar with image ${step.content.image}`
+    }
+  }
   return (
     <Drawer
       className={classes.drawer}
@@ -69,18 +67,30 @@ export default function ControlDrawer(props) {
       <div className={classes.stepper}>
         <Stepper nonLinear activeStep={props.activeStep} orientation="vertical">
           {props.steps.map((step, index) => (
-            <Step key={index}>
-              <StepButton onClick={()=>props.setActiveStep(index)}>
-                {generateStepLabel(step)}
-              </StepButton>
-              <StepContent>
-                <FilteringBox handleFilterOnThisStep={props.handleFilter(index)} />
-              </StepContent>
-            </Step>
+            step.method === props.methods.similarImages ?
+              (<Step key={index}>
+                <StepButton onClick={() => props.setActiveStep(index)}>
+                  {generateStepLabel(step)}
+                </StepButton>
+                <StepContent>
+                  <div className={classes.imageContainer}>
+                    <img src={`/LSC_Thumbnail/${step.content.image}`} alt={step.content.image} />
+                  </div>
+                </StepContent>
+              </Step>)
+              :
+              (<Step key={index}>
+                <StepButton onClick={() => props.setActiveStep(index)}>
+                  {generateStepLabel(step)}
+                </StepButton>
+                <StepContent>
+                  <FilteringBox methods={props.methods} handleFilterOnThisStep={props.handleFilter(index)} />
+                </StepContent>
+              </Step>)
           ))}
         </Stepper>
 
-        <div className={clsx(classes.buttonContainer, { [classes.hide]: !props.steps[props.steps.length-1].completed })}>
+        <div className={clsx(classes.buttonContainer, { [classes.hide]: !props.steps[props.steps.length - 1].completed })}>
           <Button variant="contained" color="primary"
             onClick={() => { props.addStep(props.activeStep) }}>
             Continue Filtering

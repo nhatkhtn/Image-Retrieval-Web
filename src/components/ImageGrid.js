@@ -5,6 +5,8 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Toolbar from '@material-ui/core/Toolbar';
 import Pagination from '@material-ui/lab/Pagination';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const numImagesPerPage = 12;
 
@@ -38,10 +40,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const initialState = {
+  mouseX: null,
+  mouseY: null,
+};
+
 export default function ImageGrid(props) {
   const classes = useStyles(props);
   const [showedImages, setShowedImages] = useState([])
-  // setShowedImages(['2015-02-23/b00000001_21i6bq_20150223_070808e.jpg', '2015-02-23/b00000002_21i6bq_20150223_070809e.jpg'])
   const [page, setPage] = useState(1)
   const handleChange = (event, value) => {
     setPage(value)
@@ -56,6 +62,27 @@ export default function ImageGrid(props) {
     setShowedImages(props.imageList.slice((page-1)*numImagesPerPage, page*numImagesPerPage))
   },[page])
 
+  const [state, setState] = useState(initialState);
+  const [selectedImage, setSelectedImage] = useState(null)
+
+  const handleContextMenu = (image) => (event) => {
+    event.preventDefault();
+    setState({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4,
+    });
+    setSelectedImage(image)
+  };
+
+  const handleClose = () => {
+    setState(initialState);
+  };
+
+  const handleSearchSimilar = (image) => {
+    handleClose();
+    props.searchSimilarImages(image,100)
+  }
+
   return (
     <div className={clsx(classes.content, {
       [classes.contentShift]: props.drawerOpen})}>
@@ -68,12 +95,26 @@ export default function ImageGrid(props) {
       <div className={classes.root}>
         <GridList cellHeight={'auto'} className={classes.gridList} cols={0}>
           {showedImages.map((image) => (
-            <GridListTile key={image} >
+            <GridListTile key={image} onContextMenu={handleContextMenu(image)}>
               <img src={`/LSC_Thumbnail/${image}`} alt={image}/>
             </GridListTile>
           ))}
         </GridList>
       </div>
+
+      <Menu
+        keepMounted
+        open={state.mouseY !== null}
+        onClose={handleClose}
+        anchorReference="anchorPosition"
+        anchorPosition={
+          state.mouseY !== null && state.mouseX !== null
+            ? { top: state.mouseY, left: state.mouseX }
+            : undefined
+        }
+      >
+        <MenuItem onClick={()=>{handleSearchSimilar(selectedImage)}}>Search Similar Images</MenuItem>
+      </Menu>
 
       <Pagination size="large" showFirstButton showLastButton
         count={Math.ceil(props.imageList.length/numImagesPerPage)} 

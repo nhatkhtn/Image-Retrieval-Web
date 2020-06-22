@@ -73,10 +73,10 @@ export default function FilteringBox(props) {
         index={value}
         onChangeIndex={handleChangeIndex}>
         <TabPanel value={value} index={0} className={classes.tabPanel}>
-          <CaptionFiltering clickFilter={props.handleFilterOnThisStep(0)} />
+          <CaptionFiltering clickFilter={props.handleFilterOnThisStep(props.methods.caption)} />
         </TabPanel>
         <TabPanel value={value} index={1} className={classes.tabPanel}>
-          <LocationsFiltering clickFilter={props.handleFilterOnThisStep(1)} />
+          <LocationsFiltering clickFilter={props.handleFilterOnThisStep(props.methods.locations)} />
         </TabPanel>
         <TabPanel value={value} index={2} className={classes.tabPanel}>
           Enter time range
