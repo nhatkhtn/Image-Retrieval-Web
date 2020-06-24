@@ -7,6 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Pagination from '@material-ui/lab/Pagination';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import AdjacentImages from './AdjacentImages'
 
 const numImagesPerPageDrawerClose = 12;
 const numImagesPerPageDrawerOpen = 24;
@@ -58,7 +59,7 @@ export default function ImageGrid(props) {
   const handleChange = (event, value) => {
     setPage(value)
   }
-  
+
   useEffect(()=>{
     if (props.drawerOpen)
       setNumImagesPerPage(numImagesPerPageDrawerClose);
@@ -73,8 +74,9 @@ export default function ImageGrid(props) {
 
   useEffect(() => {
     setShowedImages(props.imageList.slice((page - 1) * numImagesPerPage, page * numImagesPerPage))
-  }, [page,numImagesPerPage])
+  }, [page])
 
+  // Handle menu
   const [state, setState] = useState(initialState);
   const [selectedImage, setSelectedImage] = useState(null)
 
@@ -94,6 +96,20 @@ export default function ImageGrid(props) {
   const handleSearchSimilar = (image) => {
     handleClose();
     props.searchSimilarImages(image, 100)
+  }
+
+  // Handle explore adjacent images
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+
+  };
+  const handleDialogClose = () => {
+    handleClose();
+    setDialogOpen(false);
+  };
+  const handleAdjacentImages = (selectedImage)=>{
+    handleDialogOpen()
   }
 
   return (
@@ -129,8 +145,13 @@ export default function ImageGrid(props) {
             : undefined
         }>
         <MenuItem onClick={() => { handleSearchSimilar(selectedImage) }}>Search Similar Images</MenuItem>
+        <MenuItem onClick={() => { handleAdjacentImages(selectedImage) }}>Explore Adjacent Images</MenuItem>
       </Menu>
-
+      
+      <AdjacentImages 
+        open={dialogOpen}
+        handleClose={handleDialogClose}
+      />
       <div className={classes.paginationContainer}>
         <Pagination size="large" showFirstButton showLastButton
           count={Math.ceil(props.imageList.length / numImagesPerPage)}
