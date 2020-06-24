@@ -7,9 +7,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import './carousel.css'
+// import './carousel.css'
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+// import {maxImageSize} from './ImageGrid';
+const maxImageSize = 230;
 
 const imageList = ['2018-05-04/B00003970_21I6X0_20180504_105327E.JPG',
   '2018-05-04/B00005345_21I6X0_20180504_203125E.JPG',
@@ -73,6 +75,27 @@ const imageList = ['2018-05-04/B00003970_21I6X0_20180504_105327E.JPG',
   '2018-05-04/B00005172_21I6X0_20180504_191609E.JPG']
 
 const useStyles = makeStyles(theme => ({
+  gridList: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems:'center',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
+  },
+  image: {
+    display: 'block',
+    maxHeight: maxImageSize,
+    maxWidth: maxImageSize,
+    width: 'auto',
+    height: 'auto'
+  },
+  imgFullWidth: {
+    // top: '50%',
+    // width: '100%',
+    // position: 'relative',
+    transform: 'translateY(0%)',
+  },
   dialog:{
     minHeight: '80vh',
     maxHeight: '80vh',
@@ -80,6 +103,12 @@ const useStyles = makeStyles(theme => ({
   originalImage: {
     border:'solid red 2px',
     // margin:'10px',
+    display: 'block',
+    maxHeight: 270,
+    maxWidth: 270,
+    width: 'auto',
+    height: 'auto',
+    // boxShadow: '15px 21px 44px 3px rgba(0,0,0,0.57)',
   }
 }))
 export default function AdjacentImages(props) {
@@ -95,7 +124,7 @@ export default function AdjacentImages(props) {
   // TODO: use a better solution for this bug
   React.useEffect(() => {
     if (props.open && ref) {
-      setTimeout(() => { ref.scrollIntoView({block: "center"}) }, 100)
+      setTimeout(() => { ref.scrollIntoView({block: "center"}) }, 500)
     }
   }, [props.open, ref])
 
@@ -110,7 +139,7 @@ export default function AdjacentImages(props) {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
         fullWidth={true}
-        maxWidth="md"
+        maxWidth="lg"
       >
         <DialogTitle id="scroll-dialog-title">Explore adjacent images</DialogTitle>
         <DialogContent dividers >
@@ -118,11 +147,11 @@ export default function AdjacentImages(props) {
             id="scroll-dialog-description"
             tabIndex={-1}
           >
-            <GridList cellHeight={'auto'} cols={4}>
+            <GridList cellHeight={'auto'} cols={0} spacing={6} classes={{ root: classes.gridList }}>
               {imageList.map((image, index) => (
-                <GridListTile key={image} ref={index === 30 ? onRefChange : null}
-                  className={clsx({ [classes.originalImage]: index===30 })}>
-                  <img src={`/LSC_Thumbnail/${image}`} />
+                <GridListTile key={image} ref={index === 30 ? onRefChange : null} classes={{imgFullWidth:classes.imgFullWidth}}
+                  >
+                  <img src={`/LSC_Thumbnail/${image}`} className={clsx({ [classes.originalImage]: index===32,[classes.image]:index!=32 })} />
                 </GridListTile>
 
               ))}

@@ -9,8 +9,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AdjacentImages from './AdjacentImages'
 
-const numImagesPerPageDrawerClose = 12;
+const numImagesPerPageDrawerClose = 16;
 const numImagesPerPageDrawerOpen = 24;
+export const maxImageSize = 230;
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -30,12 +31,26 @@ const useStyles = makeStyles(theme => ({
     marginLeft: props => 0,
   },
 
-  root: {
+  gridList: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
+    alignItems:'center',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
+  },
+imgFullWidth: {
+  // top: '50%',
+  // width: '100%',
+  // position: 'relative',
+  transform: 'translateY(0%)',
+},
+  image: {
+    display: 'block',
+    maxHeight: maxImageSize,
+    maxWidth: maxImageSize,
+    width: 'auto',
+    height: 'auto'
   },
   hide: {
     display: 'none',
@@ -60,17 +75,17 @@ export default function ImageGrid(props) {
     setPage(value)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (props.drawerOpen)
       setNumImagesPerPage(numImagesPerPageDrawerClose);
     else
       setNumImagesPerPage(numImagesPerPageDrawerOpen);
-  },[props.drawerOpen])
+  }, [props.drawerOpen])
 
   useEffect(() => {
     setPage(1)
     setShowedImages(props.imageList.slice((page - 1) * numImagesPerPage, page * numImagesPerPage))
-  }, [props.imageList,numImagesPerPage])
+  }, [props.imageList, numImagesPerPage])
 
   useEffect(() => {
     setShowedImages(props.imageList.slice((page - 1) * numImagesPerPage, page * numImagesPerPage))
@@ -108,10 +123,10 @@ export default function ImageGrid(props) {
     handleClose();
     setDialogOpen(false);
   };
-  const handleAdjacentImages = (selectedImage)=>{
+  const handleAdjacentImages = (selectedImage) => {
     handleDialogOpen()
   }
-
+  console.log(props.imageList)
   return (
     <div className={clsx(classes.content, {
       [classes.contentShift]: props.drawerOpen
@@ -123,16 +138,13 @@ export default function ImageGrid(props) {
           page={page} onChange={handleChange}
           className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
       </div>
-
-      <div className={classes.root}>
-        <GridList cellHeight={'auto'} className={classes.gridList} cols={0}>
-          {showedImages.map((image) => (
-            <GridListTile key={image} onClick={handleClick(image)}>
-              <img src={`/LSC_Thumbnail/${image}`} alt={image} />
-            </GridListTile>
-          ))}
-        </GridList>
-      </div>
+      <GridList cellHeight={'auto'} cols={0} spacing={6} classes={{ root: classes.gridList }}>
+        {showedImages.map((image) => (
+          <GridListTile key={image} onClick={handleClick(image)} classes={{imgFullWidth:classes.imgFullWidth}} >
+            <img src={`/LSC_Thumbnail/${image}`} alt={image} className={classes.image} />
+          </GridListTile>
+        ))}
+      </GridList>
 
       <Menu
         keepMounted
@@ -147,8 +159,8 @@ export default function ImageGrid(props) {
         <MenuItem onClick={() => { handleSearchSimilar(selectedImage) }}>Search Similar Images</MenuItem>
         <MenuItem onClick={() => { handleAdjacentImages(selectedImage) }}>Explore Adjacent Images</MenuItem>
       </Menu>
-      
-      <AdjacentImages 
+
+      <AdjacentImages
         open={dialogOpen}
         handleClose={handleDialogClose}
       />
