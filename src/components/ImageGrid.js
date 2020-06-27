@@ -11,6 +11,8 @@ import AdjacentImages from './AdjacentImages'
 
 const numImagesPerPageDrawerClose = 16;
 const numImagesPerPageDrawerOpen = 24;
+const colsDrawerClose=4;
+const colsDrawerOpen=6;
 export const maxImageSize = 230;
 
 const useStyles = makeStyles(theme => ({
@@ -69,6 +71,7 @@ const initialState = {
 export default function ImageGrid(props) {
   const classes = useStyles(props);
   const [numImagesPerPage, setNumImagesPerPage] = useState(1)
+  const [cols,setCols] = useState(1)
   const [showedImages, setShowedImages] = useState([])
   const [page, setPage] = useState(1)
   const handleChange = (event, value) => {
@@ -76,10 +79,14 @@ export default function ImageGrid(props) {
   }
 
   useEffect(() => {
-    if (props.drawerOpen)
+    if (props.drawerOpen){
+      setCols(colsDrawerClose);
       setNumImagesPerPage(numImagesPerPageDrawerClose);
-    else
+    }
+    else {
+      setCols(colsDrawerOpen);
       setNumImagesPerPage(numImagesPerPageDrawerOpen);
+    }
   }, [props.drawerOpen])
 
   useEffect(() => {
@@ -93,7 +100,7 @@ export default function ImageGrid(props) {
 
   // Handle menu
   const [state, setState] = useState(initialState);
-  const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedImage, setSelectedImage] = useState('')
 
   const handleClick = (image) => (event) => {
     event.preventDefault();
@@ -126,7 +133,7 @@ export default function ImageGrid(props) {
   const handleAdjacentImages = (selectedImage) => {
     handleDialogOpen()
   }
-  console.log(props.imageList)
+  // console.log(props.imageList)
   return (
     <div className={clsx(classes.content, {
       [classes.contentShift]: props.drawerOpen
@@ -138,7 +145,7 @@ export default function ImageGrid(props) {
           page={page} onChange={handleChange}
           className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
       </div>
-      <GridList cellHeight={'auto'} cols={0} spacing={6} classes={{ root: classes.gridList }}>
+      <GridList cellHeight={'auto'} cols={cols} spacing={6} classes={{ root: classes.gridList }}>
         {showedImages.map((image) => (
           <GridListTile key={image} onClick={handleClick(image)} classes={{imgFullWidth:classes.imgFullWidth}} >
             <img src={`/LSC_Thumbnail/${image}`} alt={image} className={classes.image} />
@@ -163,6 +170,7 @@ export default function ImageGrid(props) {
       <AdjacentImages
         open={dialogOpen}
         handleClose={handleDialogClose}
+        queryImage={selectedImage}
       />
       <div className={classes.paginationContainer}>
         <Pagination size="large" showFirstButton showLastButton
