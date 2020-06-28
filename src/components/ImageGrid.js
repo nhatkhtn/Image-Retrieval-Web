@@ -9,6 +9,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AdjacentImages from './AdjacentImages'
 import Snackbar from '@material-ui/core/Snackbar';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const numImagesPerPageDrawerClose = 16;
 const numImagesPerPageDrawerOpen = 24;
@@ -61,7 +63,18 @@ imgFullWidth: {
   paginationContainer: {
     display: 'flex',
     justifyContent: 'center'
-  }
+  },
+  // TODO: make smooth transition when toggle drawer
+  backdrop: {
+    marginLeft:props => props.drawerOpen?props.drawerWidth:0,
+    color:'#fff',
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    zIndex: theme.zIndex.drawer - 1,
+    marginTop: theme.mixins.toolbar.minHeight
+  },
 }));
 
 const initialState = {
@@ -154,6 +167,7 @@ export default function ImageGrid(props) {
   const handleOpenMessage = () => {
     setOpenMessage(true);
   }
+
   return (
     <div className={clsx(classes.content, {
       [classes.contentShift]: props.drawerOpen
@@ -209,6 +223,9 @@ export default function ImageGrid(props) {
           className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
       </div>
 
+      <Backdrop className={classes.backdrop} open={props.openBackdrop} >
+        <CircularProgress color="inherit" />
+      </Backdrop> 
     </div>
   );
 }
