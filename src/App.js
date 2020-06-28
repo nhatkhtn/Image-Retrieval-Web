@@ -80,7 +80,7 @@ export default function App() {
   }
 
   const filterByLocations = (index) => (locations) => {
-    const locationString = locations.join("&")
+    const locationString = locations.join("|")
     axios.get(`${serverAddress}/query_by_metadata/${locationString}`)
       .then(res => {
         updateSteps(index, methods.locations, { locations: locations }, res.data.filenames)
@@ -102,7 +102,7 @@ export default function App() {
   }
 
   const filterByLocationsOnSubset = (index) => (locations) => {
-    const locationString = locations.join("#")
+    const locationString = locations.join("|")
     axios({
       method: 'POST',
       url: `${serverAddress}/query_by_metadata_on_subset`,
