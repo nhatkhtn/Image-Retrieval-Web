@@ -1,11 +1,13 @@
 import React from 'react';
-import { makeStyles,useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Button from '@material-ui/core/Button';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -13,6 +15,11 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
+  tabs: {
+    paddingLeft: 300,
+    display: 'flex',
+    justifyContent: 'center'
+  }
 }))
 
 export default function HeaderBar(props) {
@@ -36,11 +43,20 @@ export default function HeaderBar(props) {
 
         </IconButton>
 
-        <Typography variant="h6" noWrap>
+        <Typography variant="h6" noWrap style={{ flexGrow: 1 }}>
           Image Retrieval
         </Typography>
+        {/* <div className={classes.tabs}>
+        <Tabs  aria-label="simple tabs example">
+    <Tab label="Item One"  />
+    <Tab label="Item Two" />
+  </Tabs>
+ </div> */}
+        <Button color="inherit" onClick={props.handleOpenResults}>Show results</Button>
 
       </Toolbar>
+
+
 
     </AppBar>
   );

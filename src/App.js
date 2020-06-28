@@ -6,6 +6,7 @@ import ImageGrid from './components/ImageGrid'
 import ControlDrawer from './components/ControlDrawer';
 import axios from 'axios';
 import update from 'immutability-helper';
+import Results from './components/Results';
 
 const drawerWidth = 500;
 const initialImageList = []
@@ -115,7 +116,7 @@ export default function App() {
     })
   }
 
-  const filterByTimeRangeOnSubset = (index) => (timeBegin,timeEnd) => {
+  const filterByTimeRangeOnSubset = (index) => (timeBegin, timeEnd) => {
     axios({
       method: 'POST',
       url: `${serverAddress}/query_by_time_range_on_subset`,
@@ -138,7 +139,7 @@ export default function App() {
         minutes: minutes
       }
     }).then(res => {
-      updateSteps(index, methods.timeBefore, { minutes:minutes }, res.data.filenames)
+      updateSteps(index, methods.timeBefore, { minutes: minutes }, res.data.filenames)
     })
   }
   // Call when click Filter button of any method
@@ -189,10 +190,33 @@ export default function App() {
     }
   }
 
+  // Handle results page
+  const [results, setResults] = useState([]);
+  const [openResults, setOpenResuts] = useState(false);
+  const addImageToResults = (image) => {
+    if (!results.includes(image)) {
+      setResults(update(results, {
+        $push: [image]
+      }))
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  const handleOpenResults = () => {
+    setOpenResuts(true);
+  }
+  const handleCloseResults = () => {
+    setOpenResuts(false);
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <HeaderBar handleClickMenuButton={handleToggleDrawer} />
+      <HeaderBar
+        handleClickMenuButton={handleToggleDrawer}
+        handleOpenResults={handleOpenResults} />
 
       <ControlDrawer
         steps={steps}
@@ -207,8 +231,15 @@ export default function App() {
       <ImageGrid
         imageList={getActiveImageList(activeStep)}
         searchSimilarImages={searchSimilarImages}
+        addImageToResults={addImageToResults}
         drawerOpen={open}
-        drawerWidth={drawerWidth}/>
+        drawerWidth={drawerWidth} />
+
+      <Results
+        results={results}
+        openResults={openResults}
+        handleCloseResults={handleCloseResults}
+        setOpenResuts={setOpenResuts} />
 
     </div>
   )

@@ -8,6 +8,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AdjacentImages from './AdjacentImages'
+import Snackbar from '@material-ui/core/Snackbar';
 
 const numImagesPerPageDrawerClose = 16;
 const numImagesPerPageDrawerOpen = 24;
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   gridList: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems:'center',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
@@ -133,7 +134,26 @@ export default function ImageGrid(props) {
   const handleAdjacentImages = (selectedImage) => {
     handleDialogOpen()
   }
-  // console.log(props.imageList)
+  const handleAddImageToResults = (image) => {
+    handleClose();
+    const addingResult = props.addImageToResults(image);
+    if (addingResult) {
+      setMessage(`Add image ${selectedImage} to results.`)
+    }
+    else {
+      setMessage(`Image ${selectedImage} is already in results.`)
+    }
+    handleOpenMessage();
+  }
+  
+  const [openMessage, setOpenMessage] = useState(false);
+  const [message, setMessage] = useState('');
+  const handleCloseMessage = () => {
+    setOpenMessage(false);
+  }
+  const handleOpenMessage = () => {
+    setOpenMessage(true);
+  }
   return (
     <div className={clsx(classes.content, {
       [classes.contentShift]: props.drawerOpen
@@ -165,6 +185,7 @@ export default function ImageGrid(props) {
         }>
         <MenuItem onClick={() => { handleSearchSimilar(selectedImage) }}>Search Similar Images</MenuItem>
         <MenuItem onClick={() => { handleAdjacentImages(selectedImage) }}>Explore Adjacent Images</MenuItem>
+        <MenuItem onClick={() => { handleAddImageToResults(selectedImage) }}>Add to Results</MenuItem>
       </Menu>
 
       <AdjacentImages
@@ -172,6 +193,15 @@ export default function ImageGrid(props) {
         handleClose={handleDialogClose}
         queryImage={selectedImage}
       />
+      <Snackbar
+        severity="info"
+        anchorOrigin={{ vertical:'bottom', horizontal:'center' }}
+        open={openMessage}
+        onClose={handleCloseMessage}
+        message={message}
+        autoHideDuration={6000}
+      />
+
       <div className={classes.paginationContainer}>
         <Pagination size="large" showFirstButton showLastButton
           count={Math.ceil(props.imageList.length / numImagesPerPage)}

@@ -6,6 +6,6 @@ ReactDOM.render(<App />, document.querySelector('#root'));
 
 // import React from 'react';
 // import ReactDOM from 'react-dom';
-// import Component from './components/readcsv'
+// import Component from './exp'
 
 // ReactDOM.render(<Component />, document.querySelector('#root'));
