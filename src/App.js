@@ -170,7 +170,7 @@ const handleFilter = (index) => (method) => {
 
 const searchSimilarImages = (image, numImages = 100) => {
   const path = image.split('/')
-  axios.get(`${serverAddress}/query_similar_images/${path[0]}&${path[1]}/${numImages}`)
+  return axios.get(`${serverAddress}/query_similar_images/${path[0]}&${path[1]}/${numImages}`)
     .then(res => {
       setSteps(update(steps, {
         $splice: [[steps[activeStep].completed ? activeStep + 1 : activeStep, steps.length - activeStep - 1]],
@@ -214,16 +214,15 @@ const handleCloseResults = () => {
 // TODO: each stage a loading state
 // Handle loading image grid
 const [openBackdrop, setOpenBackdrop] = useState(false);
-const handleCloseBackdrop = () => {
-  setOpenBackdrop(false);
-}
-const handleOpenBackdrop = () => {
-  setOpenBackdrop(true);
-}
 const withLoading = (query_fn) => (index) => (...params) => {
   setOpenBackdrop(true);
   query_fn(index)(...params)
-  .then(()=>{handleCloseBackdrop();})
+  .then(()=>{setOpenBackdrop(false);})
+}
+const withLoadingSearchSimilarImages = (...params) => {
+  setOpenBackdrop(true);
+  searchSimilarImages(...params)
+  .then(()=>{setOpenBackdrop(false);})
 }
 return (
   <div className={classes.root}>
@@ -245,7 +244,7 @@ return (
     <ImageGrid
       openBackdrop={openBackdrop}
       imageList={getActiveImageList(activeStep)}
-      searchSimilarImages={withLoading(searchSimilarImages)}
+      searchSimilarImages={withLoadingSearchSimilarImages}
       addImageToResults={addImageToResults}
       drawerOpen={open}
       drawerWidth={drawerWidth} />

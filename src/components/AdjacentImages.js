@@ -13,7 +13,6 @@ import { parse as parseCSV } from 'papaparse';
 // import InfiniteScroll from 'react-bidirectional-infinite-scroll';
 // import './carousel.css'
 // import {maxImageSize} from './ImageGrid';
-const maxImageSize = 230;
 const numAdjacentImages = 52;
 
 const useStyles = makeStyles(theme => ({
@@ -27,9 +26,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	image: {
 		display: 'block',
-		maxHeight: maxImageSize,
-		maxWidth: maxImageSize,
-		width: 'auto',
+		width: '100%',
 		height: 'auto'
 	},
 	imgFullWidth: {
@@ -45,9 +42,7 @@ const useStyles = makeStyles(theme => ({
 	queryImage: {
 		border: 'solid red 2px',
 		display: 'block',
-		maxHeight: 270,
-		maxWidth: 270,
-		width: 'auto',
+		width: '100%',
 		height: 'auto',
 		// boxShadow: '15px 21px 44px 3px rgba(0,0,0,0.57)',
 	}
@@ -114,7 +109,7 @@ export default function AdjacentImages(props) {
 						id="scroll-dialog-description"
 						tabIndex={-1}
 					>
-						<GridList cellHeight={'auto'} cols={0} spacing={6} classes={{ root: classes.gridList }}>
+						<GridList cellHeight={'auto'} cols={5} spacing={6} classes={{ root: classes.gridList }}>
 							{/* <InfiniteScroll onReachBottom={()=>{}} onReachTop={()=>{}} > */}
 
 

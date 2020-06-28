@@ -16,7 +16,6 @@ const numImagesPerPageDrawerClose = 16;
 const numImagesPerPageDrawerOpen = 24;
 const colsDrawerClose=4;
 const colsDrawerOpen=6;
-export const maxImageSize = 230;
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -48,13 +47,11 @@ imgFullWidth: {
   // top: '50%',
   // width: '100%',
   // position: 'relative',
-  transform: 'translateY(0%)',
+  transform: 'translateY(0%)',//TODO: this is vertical centering
 },
   image: {
     display: 'block',
-    maxHeight: maxImageSize,
-    maxWidth: maxImageSize,
-    width: 'auto',
+    width: '100%',
     height: 'auto'
   },
   hide: {
