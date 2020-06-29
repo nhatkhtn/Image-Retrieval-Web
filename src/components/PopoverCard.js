@@ -69,7 +69,7 @@ export default function PopverCard(props) {
 					</div>
 
 					<Tooltip title="Add image to results" placement="top" aria-label="add">
-						<Fab size="medium" color="inherit" aria-label="add"
+						<Fab size="medium" color="primary" aria-label="add"
 							onClick={() => { props.handleAddImageToResults(props.selectedImage) }}>
 							<AddIcon />
 						</Fab>

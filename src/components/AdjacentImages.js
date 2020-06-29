@@ -9,11 +9,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import { parse as parseCSV } from 'papaparse';
+import PopoverCard from './PopoverCard';
+
 // import InfiniteScroll from 'react-bidirectional-infinite-scroll';
 // import './carousel.css'
 // import {maxImageSize} from './ImageGrid';
-const numAdjacentImages = 52;
 
 const useStyles = makeStyles(theme => ({
 	gridList: {
@@ -71,28 +71,47 @@ export default function AdjacentImages(props) {
 	// List of adjacent images
 	const [adjacentImages, setAdjacentImages] = React.useState([])
 	const [queryImageIndex, setQueryImageIndex] = React.useState(null)
-	React.useEffect(() => {
-		findAdjacentImages(props.queryImage)
-	}, [props.open, props.queryImage])
-	const findAdjacentImages = (image) => {
-		if (image === '') {
-			setAdjacentImages([]);
-			setQueryImageIndex(null);
-		}
-		else {
-			const folder_name = image.split('/')[0]
-			fetch(`LSC_filename/${folder_name}.csv`)
-				.then((r) => r.text())
-				.then((data) => {
-					const filenames = parseCSV(data).data.slice(1)
-					const imgIndex = filenames.findIndex((e) => (e[1] === image))
-					console.log(imgIndex)
-					const imgList = filenames.slice(Math.max(imgIndex - numAdjacentImages, 0), Math.min(imgIndex + numAdjacentImages, filenames.length)).map((row) => row[1])
-					setAdjacentImages(imgList)
-					setQueryImageIndex(imgList.findIndex((e) => e === image))
+	const searchAdjacentImagesAndUpdate = (image) => {
+		if (image !== '') {
+			props.searchAdjacentImages(image)
+				.then((result) => {
+					const [adjacentImages, queryImageIndex] = result
+					setAdjacentImages(adjacentImages)
+					setQueryImageIndex(queryImageIndex)
 				})
+
 		}
 	}
+	React.useEffect(() => {
+		searchAdjacentImagesAndUpdate(props.queryImage)
+	}, [props.open])
+
+
+	//////////////////////////////////////////////////////////
+	const [selectedImage, setSelectedImage] = React.useState('');
+
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const handleClosePopover = () => {
+		setAnchorEl(null);
+	};
+	const openPopover = Boolean(anchorEl);
+
+	const handleClick = (image) => (event) => {
+		setAnchorEl(event.currentTarget);
+		setSelectedImage(image)
+	};
+
+	const handleSearchSimilar = (image) => {
+		handleClosePopover();
+		props.handleClose();
+		props.handleSearchSimilar(image)
+	}
+
+	const handleAdjacentImages = (image) => {
+		handleClosePopover();
+		searchAdjacentImagesAndUpdate(image)
+	}
+
 
 	return (
 		<div>
@@ -100,7 +119,7 @@ export default function AdjacentImages(props) {
 				open={props.open}
 				aria-labelledby="scroll-dialog-title"
 				aria-describedby="scroll-dialog-description"
-				disableScrollLock={ true }
+				disableScrollLock={true}
 				onClose={props.handleClose}
 				fullWidth={true}
 				maxWidth="lg"
@@ -112,19 +131,27 @@ export default function AdjacentImages(props) {
 						tabIndex={-1}
 					>
 						<GridList cellHeight={'auto'} cols={5} spacing={6} classes={{ root: classes.gridList }}>
-							{/* <InfiniteScroll onReachBottom={()=>{}} onReachTop={()=>{}} > */}
-
-
-								{adjacentImages.map((image, index) => (
-									<GridListTile key={image} ref={index === queryImageIndex ? onRefChange : null} classes={{ imgFullWidth: classes.imgFullWidth }}
-									>
-										<img src={`/LSC_Thumbnail/${image}`} className={clsx({ [classes.queryImage]: index === queryImageIndex, [classes.image]: index != queryImageIndex })} />
-									</GridListTile>
-
-								))}
-
-							{/* </InfiniteScroll> */}
+							{adjacentImages.map((image, index) => (
+								<GridListTile key={image} ref={index === queryImageIndex ? onRefChange : null} classes={{ imgFullWidth: classes.imgFullWidth }}
+								>
+									<img src={`/LSC_Thumbnail/${image}`}
+										className={clsx({ [classes.queryImage]: index === queryImageIndex, [classes.image]: index != queryImageIndex })}
+										onClick={handleClick(image)}
+									/>
+								</GridListTile>
+							))}
 						</GridList>
+
+						<PopoverCard
+							open={openPopover}
+							anchorEl={anchorEl}
+							handleClose={handleClosePopover}
+							selectedImage={selectedImage}
+							handleSearchSimilar={handleSearchSimilar}
+							handleAdjacentImages={handleAdjacentImages}
+							handleAddImageToResults={props.handleAddImageToResults}
+						/>
+
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>

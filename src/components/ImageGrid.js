@@ -5,8 +5,6 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Toolbar from '@material-ui/core/Toolbar';
 import Pagination from '@material-ui/lab/Pagination';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import AdjacentImages from './AdjacentImages'
 import Snackbar from '@material-ui/core/Snackbar';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -130,20 +128,20 @@ export default function ImageGrid(props) {
     setOpenDialog(false);
   };
   const handleAdjacentImages = (selectedImage) => {
-    handleClosePopover();
+    // handleClosePopover();
     handleOpenDialog()
   }
 
 
 
   const handleAddImageToResults = (image) => {
-    handleClosePopover();
+    // handleClosePopover();
     const addingResult = props.addImageToResults(image);
     if (addingResult) {
-      setMessage(`Add image ${selectedImage} to results.`)
+      setMessage(`Add image ${image} to results.`)
     }
     else {
-      setMessage(`Image ${selectedImage} is already in results.`)
+      setMessage(`Image ${image} is already in results.`)
     }
     handleOpenMessage();
   }
@@ -210,6 +208,9 @@ export default function ImageGrid(props) {
         open={openDialog}
         handleClose={handleCloseDialog}
         queryImage={selectedImage}
+        searchAdjacentImages={props.searchAdjacentImages}
+        handleAddImageToResults={handleAddImageToResults}
+        handleSearchSimilar={handleSearchSimilar}
       />
 
       <Backdrop classes={{ root: classes.backdrop }} open={props.openBackdrop} >

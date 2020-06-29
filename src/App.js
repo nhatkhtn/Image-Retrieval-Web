@@ -7,6 +7,7 @@ import ControlDrawer from './components/ControlDrawer';
 import axios from 'axios';
 import update from 'immutability-helper';
 import Results from './components/Results';
+import { parse as parseCSV } from 'papaparse';
 
 const drawerWidth = 500;
 
@@ -87,8 +88,8 @@ export default function App() {
   }
 
   const filterByCaption = (caption, numImages) => {
-    return new Promise(resolve => {setTimeout(resolve,1000);})
-    .then(()=>axios.get(`${serverAddress}/query_by_caption/${caption}/cosine/${numImages}`))
+    return new Promise(resolve => { setTimeout(resolve, 1000); })
+      .then(() => axios.get(`${serverAddress}/query_by_caption/${caption}/cosine/${numImages}`))
       .then(res => {
         updateSteps(activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
       })
@@ -186,6 +187,19 @@ export default function App() {
       })
   }
 
+  const searchAdjacentImages = (image, numAdjacentImages = 52) => {
+    const folder_name = image.split('/')[0]
+    return fetch(`LSC_filename/${folder_name}.csv`)
+      .then((r) => r.text())
+      .then((data) => {
+        const filenames = parseCSV(data).data.slice(1)
+        const indexInFile = filenames.findIndex((e) => (e[1] === image))
+        const adjacentImages = filenames.slice(Math.max(indexInFile - numAdjacentImages, 0), Math.min(indexInFile + numAdjacentImages, filenames.length)).map((row) => row[1])
+        const indexInAdjacentImages = adjacentImages.findIndex((e) => e === image)
+        return [adjacentImages, indexInAdjacentImages]
+      })
+  }
+
   ///////////////////////////////////////////////////////////////////////
 
   // Handle loading indicator in image grid
@@ -240,12 +254,13 @@ export default function App() {
         methods={methods} />
 
       <ImageGrid
+        drawerOpen={openDrawer}
+        drawerWidth={drawerWidth}
         openBackdrop={openBackdrop}
         imageList={getActiveImageList()}
         searchSimilarImages={withLoading(searchSimilarImages)}
-        addImageToResults={addImageToResults}
-        drawerOpen={openDrawer}
-        drawerWidth={drawerWidth} />
+        searchAdjacentImages={searchAdjacentImages}
+        addImageToResults={addImageToResults} />
 
       <Results
         results={results}
