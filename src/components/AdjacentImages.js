@@ -100,6 +100,8 @@ export default function AdjacentImages(props) {
 				open={props.open}
 				aria-labelledby="scroll-dialog-title"
 				aria-describedby="scroll-dialog-description"
+				disableScrollLock={ true }
+				onClose={props.handleClose}
 				fullWidth={true}
 				maxWidth="lg"
 			>
