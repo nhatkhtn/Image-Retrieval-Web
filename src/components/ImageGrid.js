@@ -11,21 +11,8 @@ import AdjacentImages from './AdjacentImages'
 import Snackbar from '@material-ui/core/Snackbar';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Popover from '@material-ui/core/Popover';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import CardHeader from '@material-ui/core/CardHeader';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
-import Tooltip from '@material-ui/core/Tooltip';
+import PopoverCard from './PopoverCard';
+
 const colsDrawerClose = 4;
 const colsDrawerOpen = 6;
 const numImagesPerPageDrawerClose = 16;
@@ -78,22 +65,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: theme.zIndex.drawer - 1,
     marginTop: theme.mixins.toolbar.minHeight
   },
-  root: {
-    width: 400,
-  },
-  media: {
-    height: 300,
-  },
-  cardHeader: {
-    padding:10,
-    textAlign:'center'
-  },
-  title: {
-    fontSize: 13
-  },
-  searchButton: {
-    fontWeight:600,
-  }
+  
 }));
 
 
@@ -163,6 +135,7 @@ export default function ImageGrid(props) {
   }
 
 
+
   const handleAddImageToResults = (image) => {
     handleClosePopover();
     const addingResult = props.addImageToResults(image);
@@ -184,7 +157,8 @@ export default function ImageGrid(props) {
     setOpenMessage(true);
   }
 
-  
+
+
   return (
     <div className={clsx(classes.content, {
       [classes.contentShift]: props.drawerOpen
@@ -214,62 +188,14 @@ export default function ImageGrid(props) {
           className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
       </div>
 
-      <Popover
+      <PopoverCard
         open={openPopover}
         anchorEl={anchorEl}
-        onClose={handleClosePopover}
-        disableScrollLock={ true }
-        BackdropProps={{ invisible: false, classes:{root:classes.backdrop} }}
-        anchorOrigin={{
-          vertical: 'center',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'center',
-          horizontal: 'center',
-        }}
-      >
-        <Card className={classes.root}>
-
-          <CardHeader className={classes.cardHeader}
-            title={selectedImage}
-            titleTypographyProps={{ variant: 'body2' }}/>
-
-          <CardMedia
-            className={classes.media}
-            image={`/LSC_Thumbnail/${selectedImage}`}
-            title="Contemplative Reptile"
-            style={{ backgroundSize: 'contain' }}
-          />
-          <CardActions style={{padding:4}}>
-            <div style={{ flexGrow: 1, flexBasis: 0, display: 'flex', justifyContent: 'flex-start' }}>
-              <Button size="small" color="primary" 
-                className={classes.searchButton}
-                onClick={()=>{handleSearchSimilar(selectedImage)}}>
-                Similar Images
-              </Button>
-            </div>
-            <Tooltip title="Add image to results" placement="top" aria-label="add">
-              <Fab size="medium" color="inherit" aria-label="add" onClick={()=>{handleAddImageToResults(selectedImage)}}>
-                <AddIcon />
-              </Fab>
-              </Tooltip>
-            <div style={{ flexGrow: 1, flexBasis: 0, display: 'flex', justifyContent: 'flex-end' }}>
-              <Button size="small" color="primary" 
-                className={classes.searchButton}
-                onClick={()=>{handleAdjacentImages(selectedImage)}}>
-                Adjacent Images
-              </Button>
-            </div>
-
-          </CardActions>
-        </Card>
-      </Popover>
-
-      <AdjacentImages
-        open={openDialog}
-        handleClose={handleCloseDialog}
-        queryImage={selectedImage}
+        handleClose={handleClosePopover}
+        selectedImage={selectedImage}
+        handleSearchSimilar={handleSearchSimilar}
+        handleAdjacentImages={handleAdjacentImages}
+        handleAddImageToResults={handleAddImageToResults}
       />
 
       <Snackbar
@@ -280,7 +206,13 @@ export default function ImageGrid(props) {
         autoHideDuration={6000}
       />
 
-      <Backdrop classes={{root:classes.backdrop}} open={props.openBackdrop} >
+      <AdjacentImages
+        open={openDialog}
+        handleClose={handleCloseDialog}
+        queryImage={selectedImage}
+      />
+
+      <Backdrop classes={{ root: classes.backdrop }} open={props.openBackdrop} >
         <CircularProgress color="inherit" />
       </Backdrop>
 
