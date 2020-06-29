@@ -83,7 +83,8 @@ export default function AdjacentImages(props) {
 		}
 	}
 	React.useEffect(() => {
-		searchAdjacentImagesAndUpdate(props.queryImage)
+		if (props.open)
+			searchAdjacentImagesAndUpdate(props.queryImage)
 	}, [props.open])
 
 

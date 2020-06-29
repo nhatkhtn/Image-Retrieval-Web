@@ -196,6 +196,16 @@ export default function App() {
         const indexInFile = filenames.findIndex((e) => (e[1] === image))
         const adjacentImages = filenames.slice(Math.max(indexInFile - numAdjacentImages, 0), Math.min(indexInFile + numAdjacentImages, filenames.length)).map((row) => row[1])
         const indexInAdjacentImages = adjacentImages.findIndex((e) => e === image)
+
+        setSteps(update(steps, {
+          $splice: [[steps[activeStep].completed ? activeStep + 1 : activeStep, steps.length - activeStep - 1]],
+          $push: [new Step(
+            true,
+            methods.adjacentImages,
+            { image: image, queryImageIndex: indexInAdjacentImages },
+            [])]
+        }))
+
         return [adjacentImages, indexInAdjacentImages]
       })
   }

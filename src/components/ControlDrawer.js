@@ -57,6 +57,9 @@ export default function ControlDrawer(props) {
     else if (step.method === props.methods.similarImages) {
       return `Get images similar with image ${step.content.image}`
     }
+    else if (step.method === props.methods.adjacentImages) {
+      return `Get images adjacent with image ${step.content.image}`
+    }
   }
   return (
     <Drawer
@@ -73,7 +76,7 @@ export default function ControlDrawer(props) {
       <div className={classes.stepper}>
         <Stepper nonLinear activeStep={props.activeStep} orientation="vertical">
           {props.steps.map((step, index) => (
-            step.method === props.methods.similarImages ?
+            step.method === props.methods.similarImages || step.method===props.methods.adjacentImages ?
               (<Step key={index}>
                 <StepButton onClick={() => props.setActiveStep(index)}>
                   {generateStepLabel(step)}
