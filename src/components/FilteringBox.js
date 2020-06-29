@@ -78,17 +78,17 @@ export default function FilteringBox(props) {
         <TabPanel value={value} index={0} className={classes.tabPanel}>
           <CaptionFiltering 
             caption={props.step.content.caption || ''}
-            clickFilter={props.handleFilterOnThisStep(props.methods.caption)} />
+            clickFilter={props.handleFilter(props.methods.caption)} />
         </TabPanel>
         <TabPanel value={value} index={1} className={classes.tabPanel}>
           <LocationsFiltering 
             locations = {props.step.content.locations || []}
-            clickFilter={props.handleFilterOnThisStep(props.methods.locations)} />
+            clickFilter={props.handleFilter(props.methods.locations)} />
         </TabPanel>
         <TabPanel value={value} index={2} className={classes.tabPanel}>
           <TimeFiltering
             step={props.step}
-            clickFilter={props.handleFilterOnThisStep} 
+            clickFilter={props.handleFilter} 
             methods={props.methods}
             atFirstStep={props.atFirstStep}
             enableTimeBefore={props.afterFilterLocations}

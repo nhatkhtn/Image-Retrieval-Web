@@ -93,7 +93,7 @@ export default function ControlDrawer(props) {
                   <FilteringBox 
                     step={step}
                     methods={props.methods} 
-                    handleFilterOnThisStep={props.handleFilter(index)}
+                    handleFilter={props.handleFilter}
                     atFirstStep={index===0}
                     afterFilterLocations={index===1 && props.steps[0].method===props.methods.locations}
                     />
