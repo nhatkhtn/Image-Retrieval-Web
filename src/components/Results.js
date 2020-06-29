@@ -10,7 +10,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import { saveAs } from 'file-saver';
-import { parse as parseCSV } from 'papaparse';
+import {
+	GridContextProvider,
+	GridDropZone,
+	GridItem,
+	swap
+} from "react-grid-dnd";
 // import InfiniteScroll from 'react-bidirectional-infinite-scroll';
 // import './carousel.css'
 // import {maxImageSize} from './ImageGrid';
@@ -59,9 +64,18 @@ export default function AdjacentImages(props) {
 
 	const exportToFile = (imageList) => {
 		var textString = imageList.join(',\n')
-		var blob = new Blob([textString], {type: "text/plain;charset=utf-8"});
+		var blob = new Blob([textString], { type: "text/plain;charset=utf-8" });
 		saveAs(blob, "results.txt");
 	}
+
+	// target id will only be set if dragging from one dropzone to another.
+	function onChange(sourceId, sourceIndex, targetIndex, targetId) {
+		const changedResults = swap(props.results, sourceIndex, targetIndex);
+		props.setResults(changedResults);
+	}
+
+	const boxesPerRow = 4;
+	const rowHeight = 200
 
 	return (
 		<div>
@@ -78,8 +92,34 @@ export default function AdjacentImages(props) {
 						id="scroll-dialog-description"
 						tabIndex={-1}
 					>
-						<GridList cellHeight={'auto'} cols={4} spacing={6} classes={{ root: classes.gridList }}>
-							{/* <InfiniteScroll onReachBottom={()=>{}} onReachTop={()=>{}} > */}
+						<GridContextProvider onChange={onChange}>
+							<GridDropZone
+								id="items"
+								boxesPerRow={boxesPerRow}
+								rowHeight={rowHeight}
+								style={{ height: Math.ceil(props.results.length / boxesPerRow) * rowHeight }}
+							>
+								{props.results.map((item, index) => (
+									<GridItem key={item} style={{
+										// width: "100%",
+										// height: "100%",
+										padding: 10
+									}}>
+										<div
+											style={{
+												width: "100%",
+												height: "100%", display: 'relative', textAlign: 'center'
+											}}
+										>
+											<img src={`/LSC_Thumbnail/${item}`} onDragStart={(e) => { e.preventDefault(); }}
+												style={{ width: 'auto', height: 'auto', maxHeight: '100%', maxWidth: '100%' }} />
+
+										</div>
+									</GridItem>
+								))}
+							</GridDropZone>
+						</GridContextProvider>
+						{/* <GridList cellHeight={'auto'} cols={4} spacing={6} classes={{ root: classes.gridList }}>
 
 								{props.results.map((image, index) => (
 									<GridListTile key={image} 
@@ -88,14 +128,13 @@ export default function AdjacentImages(props) {
 									</GridListTile>
 
 								))}
-							{/* </InfiniteScroll> */}
-						</GridList>
+						</GridList> */}
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
 
 
-					<Button onClick={()=>{exportToFile(props.results)}} color="primary">
+					<Button onClick={() => { exportToFile(props.results) }} color="primary">
 						Export to File
           </Button>
 					<Button onClick={props.handleCloseResults} color="primary">

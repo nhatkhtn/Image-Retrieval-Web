@@ -251,6 +251,7 @@ return (
 
     <Results
       results={results}
+      setResults={setResults}
       openResults={openResults}
       handleCloseResults={handleCloseResults}
       setOpenResuts={setOpenResults} />
