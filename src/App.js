@@ -196,7 +196,7 @@ export default function App() {
         const filenames = parseCSV(data).data.slice(1).map((e)=>e[1])
         const indexInFile = filenames.findIndex((e) => (e === image))
         const startIndex = Math.max(indexInFile - numAdjacentImages, 0)
-        const endIndex = Math.min(indexInFile + numAdjacentImages, filenames.length)
+        const endIndex = Math.min(indexInFile + numAdjacentImages +1, filenames.length)
         const adjacentImages = filenames.slice(startIndex, endIndex )
         const indexInAdjacentImages = adjacentImages.findIndex((e) => e === image)
 
