@@ -105,7 +105,7 @@ export default function AdjacentImages(props) {
 	const handleSearchSimilar = (image) => {
 		handleClosePopover();
 		props.handleClose();
-		props.handleSearchSimilar(image)
+		props.handleSearchSimilar(image, 200, props.queryImage)
 	}
 
 	const handleAdjacentImages = (image) => {
