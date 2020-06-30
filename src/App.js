@@ -188,17 +188,19 @@ export default function App() {
       })
   }
 
-  const searchAdjacentImages = (image, numAdjacentImages = 52) => {
+  const searchAdjacentImages = (image, numAdjacentImages = 22) => {
     const folder_name = image.split('/')[0]
     return fetch(`LSC_filename/${folder_name}.csv`)
       .then((r) => r.text())
       .then((data) => {
-        const filenames = parseCSV(data).data.slice(1)
-        const indexInFile = filenames.findIndex((e) => (e[1] === image))
-        const adjacentImages = filenames.slice(Math.max(indexInFile - numAdjacentImages, 0), Math.min(indexInFile + numAdjacentImages, filenames.length)).map((row) => row[1])
+        const filenames = parseCSV(data).data.slice(1).map((e)=>e[1])
+        const indexInFile = filenames.findIndex((e) => (e === image))
+        const startIndex = Math.max(indexInFile - numAdjacentImages, 0)
+        const endIndex = Math.min(indexInFile + numAdjacentImages, filenames.length)
+        const adjacentImages = filenames.slice(startIndex, endIndex )
         const indexInAdjacentImages = adjacentImages.findIndex((e) => e === image)
 
-        return [adjacentImages, indexInAdjacentImages]
+        return [adjacentImages, indexInAdjacentImages, filenames, startIndex, endIndex]
       })
   }
 
