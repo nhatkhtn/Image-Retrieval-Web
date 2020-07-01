@@ -88,8 +88,7 @@ export default function App() {
   }
 
   const filterByCaption = (caption, numImages) => {
-    return new Promise(resolve => { setTimeout(resolve, 1000); })
-      .then(() => axios.get(`${serverAddress}/query_by_caption/${caption}/cosine/${numImages}`))
+    return axios.get(`${serverAddress}/query_by_caption/${caption}/cosine/${numImages}`)
       .then(res => {
         updateSteps(activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
       })
