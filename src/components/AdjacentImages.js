@@ -10,9 +10,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import PopoverCard from './PopoverCard';
-import update from 'immutability-helper';
-
-import InfiniteScroll from './scroll';
 
 const cols = 5;
 const numImagesLoadMore = 10;
