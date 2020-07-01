@@ -9,8 +9,10 @@ import Step from '@material-ui/core/Step';
 import StepContent from '@material-ui/core/StepContent';
 import StepButton from '@material-ui/core/StepButton';
 import FilteringBox from './FilteringBox'
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles( theme => ({
   drawer: {
     width: props => props.drawerWidth,
     flexShrink: 0,
@@ -20,6 +22,10 @@ const useStyles = makeStyles({
   },
   stepper: {
     width: '100%',
+  },
+  label:{
+    textAlign:'left',
+    whiteSpace:'break-spaces'
   },
   buttonContainer: {
     display: 'flex',
@@ -31,8 +37,8 @@ const useStyles = makeStyles({
   imageContainer: {
     display: 'flex',
     justifyContent: 'center'
-  }
-});
+  },
+}));
 
 
 export default function ControlDrawer(props) {
@@ -55,10 +61,10 @@ export default function ControlDrawer(props) {
       return `Get images taken before these images up to ${step. content.minutes} minutes`
     }
     else if (step.method === props.methods.similarImages) {
-      return `Get images similar with image ${step.content.image}`
+      return `Get images similar with image\n${step.content.image}`
     }
     else if (step.method === props.methods.adjacentImages) {
-      return `Get images adjacent with image ${step.content.image}`
+      return `Get images adjacent with image\n${step.content.image}`
     }
   }
   return (
@@ -78,7 +84,7 @@ export default function ControlDrawer(props) {
           {props.steps.map((step, index) => (
             step.method === props.methods.similarImages || step.method===props.methods.adjacentImages ?
               (<Step key={index}>
-                <StepButton onClick={() => props.setActiveStep(index)}>
+                <StepButton onClick={() => props.setActiveStep(index)} className={classes.label}>
                   {generateStepLabel(step)}
                 </StepButton>
                 <StepContent>
@@ -106,10 +112,11 @@ export default function ControlDrawer(props) {
         </Stepper>
 
         <div className={clsx(classes.buttonContainer, { [classes.hide]: !props.steps[props.steps.length - 1].completed })}>
-          <Button variant="contained" color="primary"
-            onClick={() => { props.addStep(props.activeStep) }}>
+          <Fab variant="extended" color="primary"
+            onClick={() => { props.addStep(props.activeStep) }} style={{verticalAlign:'middle'}}>
+            <AddIcon />
             Continue Filtering
-            </Button>
+            </Fab>
         </div>
       </div>
 

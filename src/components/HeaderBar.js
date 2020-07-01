@@ -46,13 +46,7 @@ export default function HeaderBar(props) {
         <Typography variant="h6" noWrap style={{ flexGrow: 1 }}>
           Image Retrieval
         </Typography>
-        {/* <div className={classes.tabs}>
-        <Tabs  aria-label="simple tabs example">
-    <Tab label="Item One"  />
-    <Tab label="Item Two" />
-  </Tabs>
- </div> */}
-        <Button color="inherit" onClick={props.handleOpenResults}>Show results</Button>
+        <Button variant="outlined" color="inherit" onClick={props.handleOpenResults}>Show results</Button>
 
       </Toolbar>
 

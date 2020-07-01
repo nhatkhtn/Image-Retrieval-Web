@@ -48,6 +48,7 @@ export default function LocationsFiltering(props) {
           getOptionLabel={(option) => option}
           filterSelectedOptions
           defaultValue={locations}
+          ChipProps={{color:'primary'}}
           renderInput={(params) => (
             <TextField
               {...params}
