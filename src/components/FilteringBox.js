@@ -65,7 +65,7 @@ export default function FilteringBox(props) {
           variant="fullWidth"
           indicatorColor="primary"
           textColor="primary" >
-          <Tab label={<div><FormatQuoteIcon fontSize='small' style={{verticalAlign: 'middle'}} /> Caption</div>} {...a11yProps(0)} className={classes.tab} />
+          <Tab label={<div><FormatQuoteIcon fontSize='small' style={{verticalAlign: 'middle'}} /> Text</div>} {...a11yProps(0)} className={classes.tab} />
           <Tab label={<div><LocationOnIcon fontSize='small' style={{verticalAlign: 'middle'}}/> Locations</div>} {...a11yProps(1)} className={classes.tab} />
           <Tab label={<div><AccessTimeIcon fontSize='small' style={{verticalAlign: 'middle'}} /> Time</div>} {...a11yProps(2)} className={classes.tab} />
         </Tabs>

@@ -34,7 +34,7 @@ export default function CaptionFiltering(props) {
 	const handleClick = () => {
 		if (caption === "") {
 			setInvalidInput(true);
-			setHelperText('Caption sentence cannot be empty')
+			setHelperText('Query sentence cannot be empty')
 			inputRef.current.focus();
 		}
 		else {
@@ -49,7 +49,7 @@ export default function CaptionFiltering(props) {
 			<div className={classes.search}>
 				<TextField
 					fullWidth multiline autoFocus
-					id="outlined-search" label="Caption sentence" type="search"
+					id="outlined-search" label="Query sentence" type="search"
 					helperText={helperText}
 					variant="outlined"
 					value={caption}
