@@ -13,26 +13,32 @@ import Tooltip from '@material-ui/core/Tooltip';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Backdrop from '@material-ui/core/Backdrop';
 
 const useStyles = makeStyles((theme) => ({
+	popover:{
+		'&:first-child':{
+		backgroundColor:'rgba(255,255,255,0.5) !important'
+		}
+	},
 	card: {
 		width: 400,
 	},
 	paper:{
 		borderRadius:0,
 		// boxShadow:'0 0 0 0 rgba(0,0,0,0)',
-		backgroundColor:'rgba(50,50,50)'
+		// backgroundColor:'rgba(50,50,50)'
 	},
 	image: {
 		width: '100%',
 		height: 'auto',
 		margin: 0,
-		border:'solid 1px rgb(50,50,50)'
+		border:'solid 1px white'
 		// boxShadow:'0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12)'
 	},
 	filename:{
 		textAlign:'center',
-		color:'#fff'
+		// color:'#fff'
 	},
 	buttonArea: {
 		marginLeft:10,
@@ -48,11 +54,17 @@ const useStyles = makeStyles((theme) => ({
 	},
 	addButton:{
 		marginRight:10,
-		color:'#fff'
+		// color:'#fff'
+	},
+	popper: {
+
 	},
 	tooltip: {
-		fontSize:'0.875rem'
-	}
+		// fontSize:'0.875rem'
+	},
+	backdrop:{
+		backgroundColor:'rgba(255,255,255,0.5)'
+	},
 }))
 export default function PopverCard(props) {
 	const classes = useStyles(props);
@@ -63,7 +75,8 @@ export default function PopverCard(props) {
 			anchorEl={props.anchorEl}
 			onClose={props.handleClose}
 			disableScrollLock={true}
-			BackdropProps={{ invisible: false, classes: { root: classes.backdrop } }}
+			BackdropComponent={Backdrop}
+			BackdropProps={{ invisible: false,classes:{root:classes.backdrop}}}
 			anchorOrigin={{
 				vertical: 'center',
 				horizontal: 'center',
@@ -72,6 +85,7 @@ export default function PopverCard(props) {
 				vertical: 'center',
 				horizontal: 'center',
 			}}
+			className={classes.popover}
 			classes={{paper:classes.paper}}
 		>
 			<div className={classes.card}>
@@ -83,7 +97,7 @@ export default function PopverCard(props) {
 				<div className={classes.buttonArea}>
 					<div className={classes.searchSimilar}>
 						<Tooltip title='Find images most similar to this image' placement="top">
-							<Button size="small" style={{color:'#fff'}} //color='primary' 
+							<Button size="small" color='primary' 
 								onClick={() => { props.handleSearchSimilar(props.selectedImage) }}>
 								Similar Images
               </Button>
@@ -92,7 +106,7 @@ export default function PopverCard(props) {
 
 					<div className={classes.searchAdjacent}>
 						<Tooltip title='Find images taken right before and after this image' placement="top">
-							<Button size="small" style={{color:'#fff'}} //color='primary'
+							<Button size="small" color='primary'
 								className={classes.searchButton}
 								onClick={() => { props.handleAdjacentImages(props.selectedImage) }}>
 								Adjacent Images
@@ -104,7 +118,7 @@ export default function PopverCard(props) {
 					<Tooltip classes={{tooltip:classes.tooltip}} title="Add image to results" placement="top" aria-label="add">
 							<IconButton color='inherit'
 								onClick={()=>{props.handleAddImageToResults(props.selectedImage)}}>
-							<AddIcon  fontSize='large'/>
+							<AddIcon  fontSize='large' color='primary'/>
 							</IconButton>
 					</Tooltip>
 					</div>

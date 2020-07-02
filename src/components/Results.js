@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	icon:{
 		 margin: '4px 0px' 
-	}
+	},
 }))
 
 export default function AdjacentImages(props) {
