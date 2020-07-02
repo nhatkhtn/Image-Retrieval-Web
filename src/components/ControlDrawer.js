@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepContent from '@material-ui/core/StepContent';
 import StepButton from '@material-ui/core/StepButton';
 import FilteringBox from './FilteringBox'
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles( theme => ({
   drawer: {
@@ -117,7 +115,6 @@ export default function ControlDrawer(props) {
         <div className={clsx(classes.buttonContainer, { [classes.hide]: !props.steps[props.steps.length - 1].completed })}>
           <Fab variant="extended" color="primary"
             onClick={() => { props.addStep(props.activeStep) }} style={{verticalAlign:'middle'}}>
-            <AddIcon />
             Continue Filtering
             </Fab>
         </div>
