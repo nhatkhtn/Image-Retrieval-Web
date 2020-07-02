@@ -29,7 +29,10 @@ const useStyles = makeStyles( theme => ({
   },
   buttonContainer: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginLeft: 12,
+    paddingLeft: 20,
+    paddingRight: 8,
   },
   hide: {
     display: 'none',

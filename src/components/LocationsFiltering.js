@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: '20px 0px 20px 0px',
+    margin: '16px 8px',
     // width: 500,
     '& > * + *': {
       marginTop: theme.spacing(3),
@@ -14,7 +14,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+		margin:'8px 0px'
+
   },
 }));
 

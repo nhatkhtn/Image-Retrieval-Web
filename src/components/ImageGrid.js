@@ -19,7 +19,8 @@ const numImagesPerPageDrawerOpen = 24;
 const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
-    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -50,7 +51,8 @@ const useStyles = makeStyles(theme => ({
   },
   paginationContainer: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    margin:10,
   },
   // TODO: make smooth transition when toggle drawer
   backdrop: {

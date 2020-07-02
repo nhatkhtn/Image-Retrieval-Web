@@ -7,11 +7,12 @@ import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles((theme) => ({
 	search: {
-		margin: '20px 0px 0px 0px',
+		margin: '16px 8px 0px 8px',
 	},
 	buttonContainer: {
 		display: 'flex',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		margin:'8px 0px'
 	},
 	text: {
 		display: 'inline-flex',

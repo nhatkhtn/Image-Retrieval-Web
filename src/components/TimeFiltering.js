@@ -28,10 +28,11 @@ const useStyles = makeStyles((theme) => ({
 	buttonContainer: {
 		display: 'flex',
 		justifyContent: 'center',
-		marginTop: 20
+		marginTop: 16,
+		marginBottom:8
 	},
 	firstOption: {
-		marginTop:10,
+		marginTop:4,
 	},
 	contentFirstOption: { 
 		display: 'inline-flex', 

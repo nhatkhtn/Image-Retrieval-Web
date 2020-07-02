@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
 	addButton:{
 		marginRight:10,
 		color:'#fff'
+	},
+	tooltip: {
+		fontSize:'0.875rem'
 	}
 }))
 export default function PopverCard(props) {
@@ -98,7 +101,7 @@ export default function PopverCard(props) {
 					</div>
 
 					<div className={classes.addButton}>
-					<Tooltip title="Add image to results" placement="top" aria-label="add">
+					<Tooltip classes={{tooltip:classes.tooltip}} title="Add image to results" placement="top" aria-label="add">
 							<IconButton color='inherit'
 								onClick={()=>{props.handleAddImageToResults(props.selectedImage)}}>
 							<AddIcon  fontSize='large'/>
