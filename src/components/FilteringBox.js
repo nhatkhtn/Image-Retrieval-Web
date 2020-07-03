@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tab: {
     minWidth: 20,
-    fontSize: '0.9rem',
+    fontSize: '0.875rem',
     fontWeight: 600,
   },
   box: {

@@ -25,9 +25,9 @@ class Step {
 
 const theme = createMuiTheme({
   palette: {
-    primary: {
-      main: '#0055b8',
-    },
+    // primary: {
+    //   main: '#0055b8',
+    // },
   },
 });
 
