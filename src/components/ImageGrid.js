@@ -41,10 +41,17 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
   },
+  imageContainer: {
+    overflow:'visible',
+  },
   image: {
     display: 'block',
     width: '100%',
-    height: 'auto'
+    height: 'auto',
+    cursor:'pointer',
+    '&:hover':{
+      boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px'
+    }
   },
   hide: {
     display: 'none',
@@ -167,7 +174,7 @@ export default function ImageGrid(props) {
       <Toolbar />
 
       <div className={classes.paginationContainer}>
-        <Pagination size="large" showFirstButton showLastButton
+        <Pagination size="large" color="primary" showFirstButton showLastButton
           count={Math.ceil(props.imageList.length / numImagesPerPage)}
           page={page} onChange={handleChangePage}
           className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
@@ -175,14 +182,14 @@ export default function ImageGrid(props) {
 
       <GridList cellHeight={'auto'} cols={cols} spacing={6} classes={{ root: classes.gridList }}>
         {showedImages.map((image) => (
-          <GridListTile key={image} onClick={handleClick(image)} >
+          <GridListTile key={image} onClick={handleClick(image)} classes={{tile:classes.imageContainer}}>
             <img src={`/LSC_Thumbnail/${image}`} alt={image} className={classes.image} />
           </GridListTile>
         ))}
       </GridList>
 
       <div className={classes.paginationContainer}>
-        <Pagination size="large" showFirstButton showLastButton
+        <Pagination size="large" color="primary" showFirstButton showLastButton
           count={Math.ceil(props.imageList.length / numImagesPerPage)}
           page={page} onChange={handleChangePage}
           className={clsx({ [classes.hide]: props.imageList.length === 0 })} />

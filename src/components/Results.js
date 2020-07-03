@@ -47,10 +47,12 @@ const useStyles = makeStyles(theme => ({
 	filename: {
 		wordBreak: 'break-all',
 		overflowWrap: 'break-word',
-		padding: '8px 8px 4px 8px'
+		padding: '8px 8px 4px 8px',
+		color:'rgba(0, 0, 0, 0.88)'
 	},
 	icon:{
-		 margin: '4px 0px' 
+		 margin: '4px 0px',
+		 color: '#191919'
 	},
 }))
 

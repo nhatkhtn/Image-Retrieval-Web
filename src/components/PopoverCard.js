@@ -114,13 +114,14 @@ export default function PopverCard(props) {
 
 				<div className={classes.buttonArea}>
 					<Tooltip title='Find images most similar to this image' placement="top">
-						<Button className={classes.searchButton} onClick={() => { props.handleSearchSimilar(props.selectedImage) }}>
+						<Button className={classes.searchButton} color='primary'
+						onClick={() => { props.handleSearchSimilar(props.selectedImage) }}>
 							Similar Images
 						</Button>
 					</Tooltip>
 
 					<Tooltip title='Find images taken right before and after this image' placement="top">
-						<Button className={classes.searchButton}
+						<Button className={classes.searchButton} color='primary'
 							onClick={() => { props.handleAdjacentImages(props.selectedImage) }}>
 							Adjacent Images
 						</Button>
