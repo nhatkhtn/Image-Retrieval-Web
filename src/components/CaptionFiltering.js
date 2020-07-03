@@ -62,7 +62,7 @@ export default function CaptionFiltering(props) {
 			</div>
 
 			<div className={classes.text}>
-				<Typography >Get the top </Typography>
+				<Typography>Get the top </Typography>
 				<TextField type="number"
 					inputProps={{ style: { textAlign: 'center' } }}
 					className={classes.numInput}

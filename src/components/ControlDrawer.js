@@ -9,6 +9,7 @@ import StepContent from '@material-ui/core/StepContent';
 import StepButton from '@material-ui/core/StepButton';
 import FilteringBox from './FilteringBox'
 import Fab from '@material-ui/core/Fab';
+import StepLabel from '@material-ui/core/StepLabel';
 
 const useStyles = makeStyles( theme => ({
   drawer: {
@@ -24,7 +25,10 @@ const useStyles = makeStyles( theme => ({
   },
   label:{
     textAlign:'left',
-    whiteSpace:'break-spaces'
+    whiteSpace:'break-spaces',
+  },
+  stepLabel: {
+    fontSize:'1rem'
   },
   buttonContainer: {
     display: 'flex',
