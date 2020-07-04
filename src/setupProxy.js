@@ -3,7 +3,7 @@ module.exports = function(app) {
   app.use(
     '/server',
     createProxyMiddleware({
-      target: 'http://'+process.env.REACT_APP_SERVER_ADDRESS || 'http://0.0.0.0:8000',
+      target: process.env.REACT_APP_SERVER_ADDRESS ? 'http://'+process.env.REACT_APP_SERVER_ADDRESS : 'http://127.0.0.1:8000',
       changeOrigin: true,
     })
   );
