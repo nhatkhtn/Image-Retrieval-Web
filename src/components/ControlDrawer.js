@@ -55,7 +55,7 @@ export default function ControlDrawer(props) {
       return 'Choose a filter method'
     }
     if (step.method === props.methods.caption) {
-      return `Get ${step.content.numImages} images with caption "${step.content.caption}"`
+      return `Get ${step.content.numImages} images with sentence "${step.content.caption}"`
     }
     else if (step.method === props.methods.locations) {
       return `Get images with location "${step.content.locations}"`

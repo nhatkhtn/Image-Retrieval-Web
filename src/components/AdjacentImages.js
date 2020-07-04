@@ -197,7 +197,7 @@ export default function AdjacentImages(props) {
 				maxWidth="lg"
 				onScroll={handleScroll}
 			>
-				<DialogTitle id="scroll-dialog-title">Explore adjacent images</DialogTitle>
+				<DialogTitle id="scroll-dialog-title">View Timeline</DialogTitle>
 				<DialogContent dividers ref={(ref) => { setDialogRef(ref) }}>
 					<DialogContentText
 						id="scroll-dialog-description"

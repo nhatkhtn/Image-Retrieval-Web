@@ -123,7 +123,7 @@ export default function PopverCard(props) {
 					<Tooltip title='Find images taken right before and after this image' placement="top">
 						<Button className={classes.searchButton} color='primary'
 							onClick={() => { props.handleAdjacentImages(props.selectedImage) }}>
-							Adjacent Images
+							View Timeline
 						</Button>
 					</Tooltip>
 				</div>

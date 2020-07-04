@@ -44,7 +44,7 @@ export default function HeaderBar(props) {
         </IconButton>
 
         <Typography variant="h6" noWrap style={{ flexGrow: 1 }}>
-          Image Retrieval
+          Lifelog Retrieval
         </Typography>
         <Button variant="outlined" color="inherit" onClick={props.handleOpenResults}>Show results</Button>
 
