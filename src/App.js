@@ -11,8 +11,6 @@ import { parse as parseCSV } from 'papaparse';
 
 const drawerWidth = 500;
 
-const serverAddress = 'http://127.0.0.1:8000/server';
-
 class Step {
   constructor(completed = false, method = null, content = {}, result = []) {
     this.completed = completed;
@@ -97,7 +95,7 @@ export default function App() {
   }
 
   const filterByCaption = (caption, numImages) => {
-    return axios.get(`${serverAddress}/query_by_caption/${caption}/cosine/${numImages}`)
+    return axios.get(`/server/query_by_caption/${caption}/cosine/${numImages}`)
       .then(res => {
         updateSteps(activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
       })
@@ -105,14 +103,14 @@ export default function App() {
 
   const filterByLocations = (locations) => {
     const locationString = locations.join("|")
-    return axios.get(`${serverAddress}/query_by_metadata/${locationString}`)
+    return axios.get(`/server/query_by_metadata/${locationString}`)
       .then(res => {
         updateSteps(activeStep, methods.locations, { locations: locations }, res.data.filenames)
       })
   }
 
   const filterByCaptionOnSubset = (caption, numImages) => {
-    return axios.post(`${serverAddress}/query_by_caption_on_subset`, {
+    return axios.post(`/server/query_by_caption_on_subset`, {
       subset: steps[activeStep - 1].result,
       caption: caption,
       numImages: numImages
@@ -124,7 +122,7 @@ export default function App() {
 
   const filterByLocationsOnSubset = (locations) => {
     const locationString = locations.join("|")
-    return axios.post(`${serverAddress}/query_by_metadata_on_subset`, {
+    return axios.post(`/server/query_by_metadata_on_subset`, {
       subset: steps[activeStep - 1].result,
       locations: locationString
     })
@@ -134,7 +132,7 @@ export default function App() {
   }
 
   const filterByTimeRangeOnSubset = (timeBegin, timeEnd) => {
-    return axios.post(`${serverAddress}/query_by_time_range_on_subset`, {
+    return axios.post(`/server/query_by_time_range_on_subset`, {
       subset: steps[activeStep - 1].result,
       timeBegin: timeBegin,
       timeEnd: timeEnd,
@@ -145,7 +143,7 @@ export default function App() {
   }
 
   const queryImagesBefore = (minutes) => {
-    return axios.post(`${serverAddress}/query_images_before`, {
+    return axios.post(`/server/query_images_before`, {
       subset: steps[activeStep - 1].result,
       minutes: minutes
     })
@@ -182,7 +180,7 @@ export default function App() {
 
   const searchSimilarImages = (image, numImages = 200, adjacentImage='') => {
     const path = image.split('/')
-    return axios.get(`${serverAddress}/query_similar_images/${path[0]}&${path[1]}/${numImages}`)
+    return axios.get(`/server/query_similar_images/${path[0]}&${path[1]}/${numImages}`)
       .then(res => {
         setSteps(update(steps, {
           $splice: [[steps[activeStep].completed ? activeStep + 1 : activeStep, steps.length - activeStep - 1]],
