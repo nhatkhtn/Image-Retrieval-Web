@@ -85,14 +85,20 @@ export default function App() {
   // Handle loading indicator in image grid
   // TODO: each stage a loading state
   // TODO: display query fail message
-  const [openBackdrop, setOpenBackdrop] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(-1); // default no step is loading
   const [error, setError] = useState(false);
 
   const withLoading = (query_fn) => (...params) => {
-    setOpenBackdrop(true);
+    setLoadingStep(activeStep);
     query_fn(...params)
-      .then(() => { setOpenBackdrop(false);})
-      .catch((error)=>{setError(error);console.log(error)})
+      .then(() => { setLoadingStep(-1);})
+      .catch((error)=>{
+        setError(error);
+        console.log(error);
+        setSteps(update(steps,{
+          $splice: [[activeStep + 1, steps.length - activeStep - 1]]
+        }))
+      })
   }
 
   ////////////////////////////////////////////////////////////////////////////
@@ -277,7 +283,7 @@ export default function App() {
         searchSimilarImages={withLoading(searchSimilarImages)}
         searchAdjacentImages={searchAdjacentImages}
         addImageToResults={addImageToResults}
-        openBackdrop={openBackdrop}
+        loading={loadingStep===activeStep}
         error={error} />
 
       <Results

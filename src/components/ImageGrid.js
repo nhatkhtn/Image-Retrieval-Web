@@ -224,7 +224,7 @@ export default function ImageGrid(props) {
         handleSearchSimilar={handleSearchSimilar}
       />
 
-      <Backdrop classes={{ root: classes.backdrop }} open={props.openBackdrop} >
+      <Backdrop classes={{ root: classes.backdrop }} open={props.loading} >
         {props.error ? 
           (<Typography><ErrorIcon  style={{verticalAlign: 'middle'}}/>{props.error.name}: {props.error.message}</Typography>)
           :
