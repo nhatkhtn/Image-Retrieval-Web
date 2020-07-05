@@ -10,8 +10,9 @@ import StepButton from '@material-ui/core/StepButton';
 import FilteringBox from './FilteringBox'
 import Fab from '@material-ui/core/Fab';
 import StepLabel from '@material-ui/core/StepLabel';
+import styled from 'styled-components';
 
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles(theme => ({
   drawer: {
     width: props => props.drawerWidth,
     flexShrink: 0,
@@ -23,12 +24,12 @@ const useStyles = makeStyles( theme => ({
   stepper: {
     width: '100%',
   },
-  label:{
-    textAlign:'left',
-    whiteSpace:'break-spaces',
+  label: {
+    textAlign: 'left',
+    whiteSpace: 'break-spaces',
   },
   stepLabel: {
-    fontSize:'1rem'
+    fontSize: '1rem'
   },
   buttonContainer: {
     display: 'flex',
@@ -46,9 +47,22 @@ const useStyles = makeStyles( theme => ({
   },
 }));
 
+const StyledStepButton = styled(StepButton)`
+    .MuiStepLabel-label.MuiTypography-body2 {
+      fontSize:'1rem'
+    }
+`;
+const styleStepLabel = makeStyles({
+  label: {
+    '&.MuiTypography-body2': {
+      fontSize: '1rem'
+    }
+  }
+}, { name: 'MuiStepLabel' });
 
 export default function ControlDrawer(props) {
   const classes = useStyles(props);
+  styleStepLabel();
 
   function generateStepLabel(step) {
     if (!step.completed) {
@@ -64,13 +78,13 @@ export default function ControlDrawer(props) {
       return `Get images taken from ${step.content.timeBegin} to ${step.content.timeEnd}`
     }
     else if (step.method === props.methods.timeBefore) {
-      return `Get images taken before these images up to ${step. content.minutes} minutes`
+      return `Get images taken before these images up to ${step.content.minutes} minutes`
     }
     else if (step.method === props.methods.similarImages) {
-      return `Get images similar with image\n${step.content.image}`
+      return `Get images similar with\n${step.content.image}`
     }
     else if (step.method === props.methods.adjacentImages) {
-      return `Get images adjacent with image\n${step.content.image}`
+      return `Get images adjacent with\n${step.content.image}`
     }
   }
   return (
@@ -88,7 +102,7 @@ export default function ControlDrawer(props) {
       <div className={classes.stepper}>
         <Stepper nonLinear activeStep={props.activeStep} orientation="vertical">
           {props.steps.map((step, index) => (
-            step.method === props.methods.similarImages || step.method===props.methods.adjacentImages ?
+            step.method === props.methods.similarImages || step.method === props.methods.adjacentImages ?
               (<Step key={index}>
                 <StepButton onClick={() => props.setActiveStep(index)} className={classes.label}>
                   {generateStepLabel(step)}
@@ -105,21 +119,21 @@ export default function ControlDrawer(props) {
                   {generateStepLabel(step)}
                 </StepButton>
                 <StepContent>
-                  <FilteringBox 
+                  <FilteringBox
                     step={step}
-                    methods={props.methods} 
+                    methods={props.methods}
                     handleFilter={props.handleFilter}
-                    atFirstStep={index===0}
-                    afterFilterLocations={index===1 && props.steps[0].method===props.methods.locations}
+                    atFirstStep={index === 0}
+                    afterFilterLocations={index === 1 && props.steps[0].method === props.methods.locations}
                     loading={props.loading} />
                 </StepContent>
               </Step>)
           ))}
         </Stepper>
 
-        <div className={clsx(classes.buttonContainer, { [classes.hide]: !props.steps[props.steps.length - 1].completed || props.loading})}>
+        <div className={clsx(classes.buttonContainer, { [classes.hide]: !props.steps[props.steps.length - 1].completed || props.loading })}>
           <Fab variant="extended" color="primary"
-            onClick={() => { props.addStep(props.activeStep) }} style={{verticalAlign:'middle'}}>
+            onClick={() => { props.addStep(props.activeStep) }} style={{ verticalAlign: 'middle' }}>
             Continue Filtering
             </Fab>
         </div>
