@@ -81,6 +81,20 @@ export default function App() {
     }
   }
 
+  ///////////////////////////////////////////////////////////////////////
+  // Handle loading indicator in image grid
+  // TODO: each stage a loading state
+  // TODO: display query fail message
+  const [openBackdrop, setOpenBackdrop] = useState(false);
+  const [error, setError] = useState(false);
+
+  const withLoading = (query_fn) => (...params) => {
+    setOpenBackdrop(true);
+    query_fn(...params)
+      .then(() => { setOpenBackdrop(false);})
+      .catch((error)=>{setError(error);console.log(error)})
+  }
+
   ////////////////////////////////////////////////////////////////////////////
   // All the query methods
 
@@ -95,7 +109,8 @@ export default function App() {
   }
 
   const filterByCaption = (caption, numImages) => {
-    return axios.get(`/server/query_by_caption/${caption}/cosine/${numImages}`)
+    return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
+    axios.get(`/server/query_by_caption/${caption}/cosine/${numImages}`))
       .then(res => {
         updateSteps(activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
       })
@@ -103,18 +118,20 @@ export default function App() {
 
   const filterByLocations = (locations) => {
     const locationString = locations.join("|")
-    return axios.get(`/server/query_by_metadata/${locationString}`)
+    return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
+    axios.get(`/server/query_by_metadata/${locationString}`))
       .then(res => {
         updateSteps(activeStep, methods.locations, { locations: locations }, res.data.filenames)
       })
   }
 
   const filterByCaptionOnSubset = (caption, numImages) => {
-    return axios.post(`/server/query_by_caption_on_subset`, {
+    return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
+    axios.post(`/server/query_by_caption_on_subset`, {
       subset: steps[activeStep - 1].result,
       caption: caption,
       numImages: numImages
-    })
+    }))
       .then(res => {
         updateSteps(activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
       })
@@ -180,10 +197,11 @@ export default function App() {
 
   const searchSimilarImages = (image, numImages = 200, adjacentImage='') => {
     const path = image.split('/')
-    return axios.get(`/server/query_similar_images/${path[0]}&${path[1]}/${numImages}`)
+    return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
+    axios.get(`/server/query_similar_images/${path[0]}&${path[1]}/${numImages}`))
       .then(res => {
         setSteps(update(steps, {
-          $splice: [[steps[activeStep].completed ? activeStep + 1 : activeStep, steps.length - activeStep - 1]],
+          $splice: [steps[activeStep].completed ? [activeStep + 1, steps.length - activeStep - 1]:[activeStep,steps.length-activeStep]],
           $push:// [new Step(true,methods.adjacentImages,{ image: adjacentImage},[]),
             [new Step(
             true,
@@ -208,18 +226,6 @@ export default function App() {
 
         return [adjacentImages, indexInAdjacentImages, filenames, startIndex, endIndex]
       })
-  }
-
-  ///////////////////////////////////////////////////////////////////////
-
-  // Handle loading indicator in image grid
-  // TODO: each stage a loading state
-  // TODO: display query fail message
-  const [openBackdrop, setOpenBackdrop] = useState(false);
-  const withLoading = (query_fn) => (...params) => {
-    setOpenBackdrop(true);
-    query_fn(...params)
-      .then(() => { setOpenBackdrop(false); })
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -267,11 +273,12 @@ export default function App() {
       <ImageGrid
         drawerOpen={openDrawer}
         drawerWidth={drawerWidth}
-        openBackdrop={openBackdrop}
         imageList={getActiveImageList()}
         searchSimilarImages={withLoading(searchSimilarImages)}
         searchAdjacentImages={searchAdjacentImages}
-        addImageToResults={addImageToResults} />
+        addImageToResults={addImageToResults}
+        openBackdrop={openBackdrop}
+        error={error} />
 
       <Results
         results={results}
