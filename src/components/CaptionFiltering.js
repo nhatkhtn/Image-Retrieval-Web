@@ -74,7 +74,7 @@ export default function CaptionFiltering(props) {
 			</div>
 
 			<div className={classes.buttonContainer}>
-				<Button variant="contained" color="primary"
+				<Button variant="contained" color="primary" disabled={props.loading}
 					onClick={handleClick}>
 					Filter
         </Button>

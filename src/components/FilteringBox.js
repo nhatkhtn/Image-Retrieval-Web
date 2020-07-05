@@ -84,12 +84,14 @@ export default function FilteringBox(props) {
         <TabPanel value={value} index={0} className={classes.tabPanel}>
           <CaptionFiltering 
             caption={props.step.content.caption || ''}
-            clickFilter={props.handleFilter(props.methods.caption)} />
+            clickFilter={props.handleFilter(props.methods.caption)} 
+            loading={props.loading} />
         </TabPanel>
         <TabPanel value={value} index={1} className={classes.tabPanel}>
           <LocationsFiltering 
             locations = {props.step.content.locations || []}
-            clickFilter={props.handleFilter(props.methods.locations)} />
+            clickFilter={props.handleFilter(props.methods.locations)}
+            loading={props.loading} />
         </TabPanel>
         <TabPanel value={value} index={2} className={classes.tabPanel}>
           <TimeFiltering
@@ -98,6 +100,7 @@ export default function FilteringBox(props) {
             methods={props.methods}
             atFirstStep={props.atFirstStep}
             enableTimeBefore={props.afterFilterLocations}
+            loading={props.loading} 
             />
         </TabPanel>
       </SwipeableViews>

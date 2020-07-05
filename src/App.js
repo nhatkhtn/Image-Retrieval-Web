@@ -274,7 +274,8 @@ export default function App() {
         addStep={addStep}
         drawerOpen={openDrawer}
         drawerWidth={drawerWidth}
-        methods={methods} />
+        methods={methods}
+        loading={loadingStep>=0} />
 
       <ImageGrid
         drawerOpen={openDrawer}

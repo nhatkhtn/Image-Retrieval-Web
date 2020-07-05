@@ -111,7 +111,7 @@ export default function ControlDrawer(props) {
                     handleFilter={props.handleFilter}
                     atFirstStep={index===0}
                     afterFilterLocations={index===1 && props.steps[0].method===props.methods.locations}
-                    />
+                    loading={props.loading} />
                 </StepContent>
               </Step>)
           ))}

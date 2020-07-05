@@ -131,7 +131,7 @@ export default function TimeFiltering(props) {
 			<div className={classes.buttonContainer}>
 				<Button variant="contained" color="primary"
 					onClick={handleClick}
-					disabled={props.atFirstStep}>
+					disabled={props.atFirstStep || props.loading}>
 					Filter
         </Button>
 			</div> 
