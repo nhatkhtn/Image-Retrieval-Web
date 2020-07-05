@@ -61,7 +61,14 @@ export default function App() {
     setSteps(steps => (update(steps, { $push: [new Step()] })))
   }
 
-  const updateSteps = (index, method, content, result) => {
+  const removeFollowingSteps = () => {
+      const truncatedSteps = update(steps, {
+        $splice: [[activeStep + 1, steps.length - activeStep - 1]]
+      })
+      setSteps(truncatedSteps)
+      return truncatedSteps
+  }
+  const updateSteps = (steps, index, method, content, result) => {
     setSteps(update(steps, {
       [index]: {
         completed: { $set: true, },
@@ -69,7 +76,6 @@ export default function App() {
         content: { $set: content, },
         result: { $set: result }
       },
-      $splice: [[index + 1, steps.length - index - 1]]
     }))
   }
 
@@ -95,9 +101,6 @@ export default function App() {
       .catch((error)=>{
         setError(error);
         console.log(error);
-        setSteps(update(steps,{
-          $splice: [[activeStep + 1, steps.length - activeStep - 1]]
-        }))
       })
   }
 
@@ -115,23 +118,26 @@ export default function App() {
   }
 
   const filterByCaption = (caption, numImages) => {
+    const truncatedSteps = removeFollowingSteps()
     return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
     axios.get(`/server/query_by_caption/${caption}/cosine/${numImages}`))
       .then(res => {
-        updateSteps(activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
+        updateSteps(truncatedSteps, activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
       })
   }
 
   const filterByLocations = (locations) => {
+    const truncatedSteps = removeFollowingSteps()
     const locationString = locations.join("|")
     return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
     axios.get(`/server/query_by_metadata/${locationString}`))
       .then(res => {
-        updateSteps(activeStep, methods.locations, { locations: locations }, res.data.filenames)
+        updateSteps(truncatedSteps, activeStep, methods.locations, { locations: locations }, res.data.filenames)
       })
   }
 
   const filterByCaptionOnSubset = (caption, numImages) => {
+    const truncatedSteps = removeFollowingSteps()
     return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
     axios.post(`/server/query_by_caption_on_subset`, {
       subset: steps[activeStep - 1].result,
@@ -139,39 +145,42 @@ export default function App() {
       numImages: numImages
     }))
       .then(res => {
-        updateSteps(activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
+        updateSteps(truncatedSteps, activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
       })
   }
 
   const filterByLocationsOnSubset = (locations) => {
+    const truncatedSteps = removeFollowingSteps()
     const locationString = locations.join("|")
     return axios.post(`/server/query_by_metadata_on_subset`, {
       subset: steps[activeStep - 1].result,
       locations: locationString
     })
       .then(res => {
-        updateSteps(activeStep, methods.locations, { locations: locations }, res.data.filenames)
+        updateSteps(truncatedSteps, activeStep, methods.locations, { locations: locations }, res.data.filenames)
       })
   }
 
   const filterByTimeRangeOnSubset = (timeBegin, timeEnd) => {
+    const truncatedSteps = removeFollowingSteps()
     return axios.post(`/server/query_by_time_range_on_subset`, {
       subset: steps[activeStep - 1].result,
       timeBegin: timeBegin,
       timeEnd: timeEnd,
     })
       .then(res => {
-        updateSteps(activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
+        updateSteps(truncatedSteps, activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
       })
   }
 
   const queryImagesBefore = (minutes) => {
+    const truncatedSteps = removeFollowingSteps()
     return axios.post(`/server/query_images_before`, {
       subset: steps[activeStep - 1].result,
       minutes: minutes
     })
       .then(res => {
-        updateSteps(activeStep, methods.timeBefore, { minutes: minutes }, res.data.filenames)
+        updateSteps(truncatedSteps, activeStep, methods.timeBefore, { minutes: minutes }, res.data.filenames)
       })
   }
 
@@ -202,19 +211,28 @@ export default function App() {
   }
 
   const searchSimilarImages = (image, numImages = 200, adjacentImage='') => {
+    const newSteps = update(steps,{
+      $splice: [steps[activeStep].completed ? [activeStep + 1, steps.length - activeStep - 1]:[activeStep,steps.length-activeStep]],
+      $push:// [new Step(true,methods.adjacentImages,{ image: adjacentImage},[]),
+            [new Step(true,methods.similarImages, { image: image, numImages: numImages }, [])]
+    })
+    setSteps(newSteps)
+    setLoadingStep(newSteps.length-1);
+    
     const path = image.split('/')
     return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
     axios.get(`/server/query_similar_images/${path[0]}&${path[1]}/${numImages}`))
       .then(res => {
-        setSteps(update(steps, {
-          $splice: [steps[activeStep].completed ? [activeStep + 1, steps.length - activeStep - 1]:[activeStep,steps.length-activeStep]],
-          $push:// [new Step(true,methods.adjacentImages,{ image: adjacentImage},[]),
-            [new Step(
-            true,
-            methods.similarImages,
-            { image: image, numImages: numImages },
-            res.data.filenames)]
+        setSteps(update(newSteps, {
+          [newSteps.length-1]:{
+            result:{$set: res.data.filenames},
+          }
         }))
+      })
+      .then(() => { setLoadingStep(-1);})
+      .catch((error)=>{
+        setError(error);
+        console.log(error);
       })
   }
 
@@ -281,7 +299,7 @@ export default function App() {
         drawerOpen={openDrawer}
         drawerWidth={drawerWidth}
         imageList={getActiveImageList()}
-        searchSimilarImages={withLoading(searchSimilarImages)}
+        searchSimilarImages={searchSimilarImages}
         searchAdjacentImages={searchAdjacentImages}
         addImageToResults={addImageToResults}
         loading={loadingStep===activeStep}

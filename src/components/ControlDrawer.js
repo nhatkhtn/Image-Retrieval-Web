@@ -117,7 +117,7 @@ export default function ControlDrawer(props) {
           ))}
         </Stepper>
 
-        <div className={clsx(classes.buttonContainer, { [classes.hide]: !props.steps[props.steps.length - 1].completed })}>
+        <div className={clsx(classes.buttonContainer, { [classes.hide]: !props.steps[props.steps.length - 1].completed || props.loading})}>
           <Fab variant="extended" color="primary"
             onClick={() => { props.addStep(props.activeStep) }} style={{verticalAlign:'middle'}}>
             Continue Filtering
