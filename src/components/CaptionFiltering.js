@@ -57,7 +57,9 @@ export default function CaptionFiltering(props) {
 					value={caption}
 					error={invalidInput}
 					inputRef={inputRef}
-					onChange={(e) => setCaption(e.target.value)}
+					onChange={(e) => setCaption(e.target.value.slice(-1)==='\n'? 
+						e.target.value.slice(0,-1): e.target.value)}
+					onKeyDown={(e) => {if (e.key==='Enter') handleClick();}}
 				/>
 			</div>
 
