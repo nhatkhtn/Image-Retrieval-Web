@@ -20,9 +20,12 @@ const numImagesPerPageDrawerOpen = 24;
 
 const useStyles = makeStyles(theme => ({
   content: {
+    height:'100vh',
+    display:'flex',
+    flexDirection:'column',
     flexGrow: 1,
     paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
+    // paddingRight: theme.spacing(1),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -174,7 +177,7 @@ export default function ImageGrid(props) {
     })}>
 
       <Toolbar />
-
+      <div style={{overflowY: 'scroll',flexGrow: 1}}>
       <div className={classes.paginationContainer}>
         <Pagination size="large" color="primary" showFirstButton showLastButton
           count={Math.ceil(props.imageList.length / numImagesPerPage)}
@@ -196,7 +199,7 @@ export default function ImageGrid(props) {
           page={page} onChange={handleChangePage}
           className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
       </div>
-
+      </div>
       <PopoverCard
         open={openPopover}
         anchorEl={anchorEl}
