@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function AdjacentImages(props) {
+export default function Results(props) {
 	const classes = useStyles();
 
 	const exportToFile = (imageList) => {

@@ -55,7 +55,8 @@ const StyledStepButton = styled(StepButton)`
 const styleStepLabel = makeStyles({
   label: {
     '&.MuiTypography-body2': {
-      fontSize: '1rem'
+      fontSize: '1rem',
+      textAlign:'left'
     }
   }
 }, { name: 'MuiStepLabel' });

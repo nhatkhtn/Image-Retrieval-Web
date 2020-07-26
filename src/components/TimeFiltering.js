@@ -78,7 +78,7 @@ export default function TimeFiltering(props) {
 					<div className={classes.firstOption}>
 						<FormControlLabel value={props.methods.timeRange.toString()}
 							control={<Radio color="primary" />} 
-							disabled={props.atFirstStep}
+							// disabled={props.atFirstStep}
 							label='Filter images taken within a time range' />
 						<div className={classes.contentFirstOption}>
 							<Typography> From </Typography>
@@ -89,7 +89,7 @@ export default function TimeFiltering(props) {
 									className={classes.timePicker}
 									InputLabelProps={{ shrink: true,}}
 									inputProps={{ step: 300, }}
-									disabled={props.atFirstStep}
+									// disabled={props.atFirstStep}
 									onChange={(e)=>setTimeBegin(e.target.value)}
 								/>
 							</form>
@@ -101,7 +101,7 @@ export default function TimeFiltering(props) {
 									className={classes.timePicker}
 									InputLabelProps={{ shrink: true,}}
 									inputProps={{ step: 300, }}
-									disabled={props.atFirstStep}
+									// disabled={props.atFirstStep}
 									onChange={(e)=>setTimeEnd(e.target.value)}
 								/>
 							</form>
@@ -131,7 +131,7 @@ export default function TimeFiltering(props) {
 			<div className={classes.buttonContainer}>
 				<Button variant="contained" color="primary"
 					onClick={handleClick}
-					disabled={props.atFirstStep || props.loading}>
+					disabled={props.loading}>
 					Filter
         </Button>
 			</div> 

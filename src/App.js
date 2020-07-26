@@ -119,8 +119,7 @@ export default function App() {
 
   const filterByCaption = (caption, numImages) => {
     const truncatedSteps = removeFollowingSteps()
-    return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
-    axios.get(`/server/query_by_caption/${caption}/cosine/${numImages}`))
+    return axios.get(`/server/query_by_caption/${caption}/cosine/${numImages}`)
       .then(res => {
         updateSteps(truncatedSteps, activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
       })
@@ -129,8 +128,7 @@ export default function App() {
   const filterByLocations = (locations) => {
     const truncatedSteps = removeFollowingSteps()
     const locationString = locations.join("|")
-    return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
-    axios.get(`/server/query_by_metadata/${locationString}`))
+    return axios.get(`/server/query_by_metadata/${locationString}`)
       .then(res => {
         updateSteps(truncatedSteps, activeStep, methods.locations, { locations: locations }, res.data.filenames)
       })
@@ -138,12 +136,11 @@ export default function App() {
 
   const filterByCaptionOnSubset = (caption, numImages) => {
     const truncatedSteps = removeFollowingSteps()
-    return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
-    axios.post(`/server/query_by_caption_on_subset`, {
+    return axios.post(`/server/query_by_caption_on_subset`, {
       subset: steps[activeStep - 1].result,
       caption: caption,
       numImages: numImages
-    }))
+    })
       .then(res => {
         updateSteps(truncatedSteps, activeStep, methods.caption, { caption: caption, numImages: numImages }, res.data.filenames)
       })
@@ -161,9 +158,16 @@ export default function App() {
       })
   }
 
+  const filterByTimeRange = (timeBegin, timeEnd) => {
+    const truncatedSteps = removeFollowingSteps()
+    return axios.get(`/server/query_by_time_range/${timeBegin}/${timeEnd}`)
+      .then(res => {
+        updateSteps(truncatedSteps, activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
+      })
+  }
   const filterByTimeRangeOnSubset = (timeBegin, timeEnd) => {
     const truncatedSteps = removeFollowingSteps()
-    return axios.post(`/server/query_by_time_range_on_subset`, {
+    return axios.post(`/server/query_by_time_range`, {
       subset: steps[activeStep - 1].result,
       timeBegin: timeBegin,
       timeEnd: timeEnd,
@@ -192,6 +196,9 @@ export default function App() {
       }
       else if (method === methods.locations) {
         return withLoading(filterByLocations)
+      }
+      else if (method === methods.timeRange) {
+        return withLoading(filterByTimeRange)
       }
     }
     else {
