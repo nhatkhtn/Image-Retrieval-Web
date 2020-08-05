@@ -56,7 +56,10 @@ const useStyles = makeStyles(theme => ({
     cursor:'pointer',
     '&:hover':{
       boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px'
-    }
+    },
+    // bug half image cutted in Chrome
+    top:'0%',
+    transform:'translateY(0%)',
   },
   hide: {
     display: 'none',
@@ -80,6 +83,15 @@ const useStyles = makeStyles(theme => ({
   
 }));
 
+// .MuiGridListTile-imgFullWidth
+// const styleStepLabel = makeStyles({
+//   label: {
+//     '&.MuiTypography-body2': {
+//       fontSize: '1rem',
+//       textAlign:'left'
+//     }
+//   }
+// }, { name: 'MuiStepLabel' });
 
 export default function ImageGrid(props) {
   const classes = useStyles(props);
