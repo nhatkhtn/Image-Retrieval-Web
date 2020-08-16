@@ -167,7 +167,7 @@ export default function App() {
   }
   const filterByTimeRangeOnSubset = (timeBegin, timeEnd) => {
     const truncatedSteps = removeFollowingSteps()
-    return axios.post(`/server/query_by_time_range`, {
+    return axios.post(`/server/query_by_time_range_on_subset`, {
       subset: steps[activeStep - 1].result,
       timeBegin: timeBegin,
       timeEnd: timeEnd,

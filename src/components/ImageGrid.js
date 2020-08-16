@@ -60,6 +60,7 @@ const useStyles = makeStyles(theme => ({
     // bug half image cutted in Chrome
     top:'0%',
     transform:'translateY(0%)',
+    left:'0%'
   },
   hide: {
     display: 'none',
@@ -189,7 +190,7 @@ export default function ImageGrid(props) {
     })}>
 
       <Toolbar />
-      <div style={{overflowY: 'scroll',flexGrow: 1}}>
+      <div style={{overflowY: 'scroll',flexGrow: 1,overflowX:'hidden'}}>
       <div className={classes.paginationContainer}>
         <Pagination size="large" color="primary" showFirstButton showLastButton
           count={Math.ceil(props.imageList.length / numImagesPerPage)}
