@@ -67,7 +67,7 @@ export default function ControlDrawer(props) {
 
   function generateStepLabel(step) {
     if (!step.completed) {
-      return 'Choose a filter method'
+      return 'Enter a query sentence'
     }
     if (step.method === props.methods.caption) {
       return `Get ${step.content.numImages} images with sentence "${step.content.caption}"`

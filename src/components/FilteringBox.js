@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     width: '100%',
-    boxShadow:'0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)'
+    boxShadow:'0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
+    padding:'10px 4px'
   },
   appbar: {
     // boxShadow:'0 0 0 0 rgba(0,0,0,0)',
@@ -62,7 +63,7 @@ export default function FilteringBox(props) {
   return (
     <div className={classes.root}>
 
-      <AppBar position="static" color='default' className={classes.appbar}>
+      {/* <AppBar position="static" color='default' className={classes.appbar}>
         <Tabs value={value}
           onChange={handleChange}
           aria-label=" tabs example"
@@ -74,19 +75,19 @@ export default function FilteringBox(props) {
           <Tab label={<div><LocationOnIcon fontSize='small' style={{verticalAlign: 'middle'}}/> Locations</div>} {...a11yProps(1)} className={classes.tab} />
           <Tab label={<div><AccessTimeIcon fontSize='small' style={{verticalAlign: 'middle'}} /> Time</div>} {...a11yProps(2)} className={classes.tab} />
         </Tabs>
-      </AppBar>
+      </AppBar> */}
       
       {/* <div className={classes.box}> */}
-      <SwipeableViews
+      {/* <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}>
-        <TabPanel value={value} index={0} className={classes.tabPanel}>
+        <TabPanel value={value} index={0} className={classes.tabPanel}> */}
           <CaptionFiltering 
             caption={props.step.content.caption || ''}
             clickFilter={props.handleFilter(props.methods.caption)} 
             loading={props.loading} />
-        </TabPanel>
+        {/* </TabPanel>
         <TabPanel value={value} index={1} className={classes.tabPanel}>
           <LocationsFiltering 
             locations = {props.step.content.locations || []}
@@ -103,7 +104,7 @@ export default function FilteringBox(props) {
             loading={props.loading} 
             />
         </TabPanel>
-      </SwipeableViews>
+      </SwipeableViews> */}
       {/* </div> */}
     </div >
   );
