@@ -110,7 +110,7 @@ export default function ControlDrawer(props) {
                 </StepButton>
                 <StepContent>
                   <div className={classes.imageContainer}>
-                    <img src={`/LSC_Thumbnail/${step.content.image}`} alt={step.content.image} />
+                    <img src={`/thumbnail/${step.content.image}`} alt={step.content.image} />
                   </div>
                 </StepContent>
               </Step>)

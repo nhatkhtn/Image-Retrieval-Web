@@ -201,7 +201,7 @@ export default function ImageGrid(props) {
       <GridList cellHeight={'auto'} cols={cols} spacing={6} classes={{ root: classes.gridList }}>
         {showedImages.map((image) => (
           <GridListTile key={image} onClick={handleClick(image)} classes={{tile:classes.imageContainer}}>
-            <img src={`/LSC_Thumbnail/${image}`} alt={image} className={classes.image} />
+            <img src={`/thumbnail/${image}`} alt={image} className={classes.image} />
           </GridListTile>
         ))}
       </GridList>

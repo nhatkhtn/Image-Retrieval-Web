@@ -245,7 +245,7 @@ export default function App() {
 
   const searchAdjacentImages = (image, numAdjacentImages = 22) => {
     const folder_name = image.split('/')[0]
-    return fetch(`LSC_filename/${folder_name}.csv`)
+    return fetch(`filename/${folder_name}.csv`)
       .then((r) => r.text())
       .then((data) => {
         const filenames = parseCSV(data).data.slice(1).map((e)=>e[1])

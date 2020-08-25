@@ -95,7 +95,7 @@ export default function PopverCard(props) {
 		>
 			<div className={classes.card}>
 
-				<img src={`/LSC_Thumbnail/${props.selectedImage}`} className={classes.image} />
+				<img src={`/thumbnail/${props.selectedImage}`} className={classes.image} />
 
 				<div className={classes.filenameAndAddButton}>
 					<Typography variant="body2" component="p" className={classes.filename} >

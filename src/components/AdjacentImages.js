@@ -213,7 +213,7 @@ export default function AdjacentImages(props) {
 							))}
 							{adjacentImages.map((image, index) => (
 								<GridListTile ref={index === queryImageIndex ? ref : null} classes={{ imgFullWidth: classes.imgFullWidth }}>
-									<img src={`/LSC_Thumbnail/${image}`}
+									<img src={`/thumbnail/${image}`}
 										className={clsx({ [classes.queryImage]: index === queryImageIndex, [classes.image]: index != queryImageIndex })}
 										onClick={handleClick(image)}
 									/>
