@@ -12,7 +12,7 @@ import { parse as parseCSV } from 'papaparse';
 const drawerWidth = 500;
 
 class Step {
-  constructor(completed = false, method = null, content = {}, result = []) {
+  constructor(completed = false, method = null, content = {}, result = ['119.jpg','450.jpg']) {
     this.completed = completed;
     this.method = method;
     this.content = content;
@@ -226,9 +226,8 @@ export default function App() {
     setSteps(newSteps)
     setLoadingStep(newSteps.length-1);
     
-    const path = image.split('/')
     return new Promise((resolve)=>{setTimeout(resolve,5000)}).then(()=>
-    axios.get(`/server/query_similar_images/${path[0]}&${path[1]}/${numImages}`))
+    axios.get(`/server/query_similar_images/${image}/${numImages}`))
       .then(res => {
         setSteps(update(newSteps, {
           [newSteps.length-1]:{
