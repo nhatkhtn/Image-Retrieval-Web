@@ -20,9 +20,9 @@ const numImagesPerPageDrawerOpen = 24;
 
 const useStyles = makeStyles(theme => ({
   content: {
-    height:'100vh',
-    display:'flex',
-    flexDirection:'column',
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
     flexGrow: 1,
     paddingLeft: theme.spacing(1),
     // paddingRight: theme.spacing(1),
@@ -47,20 +47,23 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   imageContainer: {
-    overflow:'visible',
+    overflow: 'visible',
   },
   image: {
     display: 'block',
     width: '100%',
     height: 'auto',
-    cursor:'pointer',
-    '&:hover':{
+    width: 'auto',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    cursor: 'pointer',
+    '&:hover': {
       boxShadow: 'rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px'
     },
     // bug half image cutted in Chrome
-    top:'0%',
-    transform:'translateY(0%)',
-    left:'0%'
+    top: '0%',
+    transform: 'translateY(0%)',
+    left: '0%'
   },
   hide: {
     display: 'none',
@@ -68,7 +71,7 @@ const useStyles = makeStyles(theme => ({
   paginationContainer: {
     display: 'flex',
     justifyContent: 'center',
-    margin:10,
+    margin: 10,
   },
   // TODO: make smooth transition when toggle drawer
   backdrop: {
@@ -81,7 +84,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: theme.zIndex.drawer - 1,
     marginTop: theme.mixins.toolbar.minHeight
   },
-  
+
 }));
 
 // .MuiGridListTile-imgFullWidth
@@ -190,28 +193,34 @@ export default function ImageGrid(props) {
     })}>
 
       <Toolbar />
-      <div style={{overflowY: 'scroll',flexGrow: 1,overflowX:'hidden'}}>
-      <div className={classes.paginationContainer}>
-        <Pagination size="large" color="primary" showFirstButton showLastButton
-          count={Math.ceil(props.imageList.length / numImagesPerPage)}
-          page={page} onChange={handleChangePage}
-          className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
-      </div>
+      <div style={{ overflowY: 'scroll', flexGrow: 1, overflowX: 'hidden' }}>
+        <div className={classes.paginationContainer}>
+          <Pagination size="large" color="primary" showFirstButton showLastButton
+            count={Math.ceil(props.imageList.length / numImagesPerPage)}
+            page={page} onChange={handleChangePage}
+            className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
+        </div>
 
-      <GridList cellHeight={'auto'} cols={cols} spacing={6} classes={{ root: classes.gridList }}>
-        {showedImages.map((image) => (
-          <GridListTile key={image} onClick={handleClick(image)} classes={{tile:classes.imageContainer}}>
-            <img src={`/thumbnail/${image}`} alt={image} className={classes.image} />
-          </GridListTile>
-        ))}
-      </GridList>
+        <GridList cellHeight={'auto'} cols={cols} spacing={6} classes={{ root: classes.gridList }}>
+          {showedImages.map((image) => (
+            <GridListTile key={image} onClick={handleClick(image)} classes={{ tile: classes.imageContainer }}>
+              <div style={{ width: '100&', height: 0, paddingTop: '100%' }}>
+                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }}>
+                    <img src={`/thumbnail/${image}`} alt={image} className={classes.image} />
+                  </div>
+                </div>
+              </div>
+            </GridListTile>
+          ))}
+        </GridList>
 
-      <div className={classes.paginationContainer}>
-        <Pagination size="large" color="primary" showFirstButton showLastButton
-          count={Math.ceil(props.imageList.length / numImagesPerPage)}
-          page={page} onChange={handleChangePage}
-          className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
-      </div>
+        <div className={classes.paginationContainer}>
+          <Pagination size="large" color="primary" showFirstButton showLastButton
+            count={Math.ceil(props.imageList.length / numImagesPerPage)}
+            page={page} onChange={handleChangePage}
+            className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
+        </div>
       </div>
       <PopoverCard
         open={openPopover}
@@ -241,8 +250,8 @@ export default function ImageGrid(props) {
       />
 
       <Backdrop classes={{ root: classes.backdrop }} open={props.loading} >
-        {props.error ? 
-          (<Typography><ErrorIcon  style={{verticalAlign: 'middle'}}/>{props.error.name}: {props.error.message}</Typography>)
+        {props.error ?
+          (<Typography><ErrorIcon style={{ verticalAlign: 'middle' }} />{props.error.name}: {props.error.message}</Typography>)
           :
           (<CircularProgress color="inherit" />)}
       </Backdrop>

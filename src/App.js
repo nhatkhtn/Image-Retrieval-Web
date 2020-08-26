@@ -12,7 +12,7 @@ import { parse as parseCSV } from 'papaparse';
 const drawerWidth = 500;
 
 class Step {
-  constructor(completed = false, method = null, content = {}, result = ['119.jpg','450.jpg']) {
+  constructor(completed = false, method = null, content = {}, result = []) {
     this.completed = completed;
     this.method = method;
     this.content = content;
