@@ -13,6 +13,10 @@ import PopoverCard from './PopoverCard';
 import ErrorIcon from '@material-ui/icons/Error';
 import Typography from '@material-ui/core/Typography';
 import MuiAlert from '@material-ui/lab/Alert';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 const colsDrawerClose = 4;
 const colsDrawerOpen = 6;
@@ -207,6 +211,15 @@ export default function ImageGrid(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
+  const [openConfirm, setOpenConfirm] = useState(false);
+
+  const handleOpenConfirm = () => {
+    setOpenConfirm(true);
+  };
+  const handleCloseConfirm = () => {
+    setOpenConfirm(false);
+  };
+
   return (
     <div className={clsx(classes.content, {
       [classes.contentShift]: props.drawerOpen
@@ -243,7 +256,8 @@ export default function ImageGrid(props) {
         selectedImage={selectedImage}
         handleSearchSimilar={handleSearchSimilar}
         handleAdjacentImages={handleAdjacentImages}
-        handleAddImageToResults={handleAddImageToResults}
+        // handleAddImageToResults={handleAddImageToResults}
+        handleOpenConfirm={handleOpenConfirm}
       />
 
       <Snackbar
@@ -271,6 +285,28 @@ export default function ImageGrid(props) {
           :
           (<CircularProgress color="inherit" />)}
       </Backdrop>
+      
+      {/*Confirm dialog for LSC challenge*/}
+      <Dialog
+        open={openConfirm}
+        onClose={handleCloseConfirm}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Are you sure you want to submit this image?"}</DialogTitle>
+        <DialogActions>
+          <Button onClick={()=>{
+            handleAddImageToResults(selectedImage);
+            handleCloseConfirm();
+            }}
+            color="primary">
+            YES
+          </Button>
+          <Button onClick={handleCloseConfirm} color="primary" autoFocus>
+            NO
+          </Button>
+        </DialogActions>
+      </Dialog>
 
     </div>
   );

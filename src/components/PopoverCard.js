@@ -106,7 +106,7 @@ export default function PopverCard(props) {
 					<div className={classes.addButton}>
 						<Tooltip classes={{ tooltip: classes.tooltip }} title="Submit image" placement="top" aria-label="add">
 							<Fab color='primary'
-								onClick={() => { props.handleAddImageToResults(props.selectedImage) }}>
+								onClick={ props.handleOpenConfirm }>
 								<SendIcon fontSize='large' />
 							</Fab>
 						</Tooltip>

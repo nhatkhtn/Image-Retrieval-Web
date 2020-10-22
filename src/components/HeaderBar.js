@@ -96,8 +96,6 @@ export default function HeaderBar(props) {
 
       </Toolbar>
 
-
-
     </AppBar>
   );
 }
