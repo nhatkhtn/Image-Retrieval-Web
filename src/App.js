@@ -130,6 +130,7 @@ export default function App() {
     const locationString = locations.join("|")
     return axios.get(`/server/query_by_metadata/${locationString}`)
       .then(res => {
+        console.log(res.data.filenames)
         updateSteps(truncatedSteps, activeStep, methods.locations, { locations: locations }, res.data.filenames)
       })
   }
@@ -282,6 +283,9 @@ export default function App() {
     setOpenResults(false);
   }
 
+  //////////////////////////////////////////////////////////////////////////
+  // Handle session ID for LSC challenge
+  const [sessionID,setSessionID] = useState('');
 
   return (
     <ThemeProvider theme={theme}>
@@ -289,7 +293,9 @@ export default function App() {
       <CssBaseline />
       <HeaderBar
         handleClickMenuButton={handleToggleDrawer}
-        handleOpenResults={handleOpenResults} />
+        handleOpenResults={handleOpenResults} 
+        sessionID={sessionID}
+        setSessionID={setSessionID}/>
 
       <ControlDrawer
         steps={steps}
@@ -310,7 +316,8 @@ export default function App() {
         searchAdjacentImages={searchAdjacentImages}
         addImageToResults={addImageToResults}
         loading={loadingStep===activeStep}
-        error={error} />
+        error={error} 
+        sessionID={sessionID}/>
 
       <Results
         results={results}

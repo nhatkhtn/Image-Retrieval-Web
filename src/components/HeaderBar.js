@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
 export default function HeaderBar(props) {
   const theme = useTheme();
   const classes = useStyles(theme);
-  const [sessionID, setCaptionID] = useState('')
 
   return (
     <AppBar
@@ -88,8 +87,8 @@ export default function HeaderBar(props) {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              value={sessionID}
-              onChange={(e) => setCaption(e.target.value)}
+              value={props.sessionID}
+              onChange={e=>props.setSessionID(e.target.value)}
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>

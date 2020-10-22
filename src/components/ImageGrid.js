@@ -12,6 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import PopoverCard from './PopoverCard';
 import ErrorIcon from '@material-ui/icons/Error';
 import Typography from '@material-ui/core/Typography';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const colsDrawerClose = 4;
 const colsDrawerOpen = 6;
@@ -161,20 +162,9 @@ export default function ImageGrid(props) {
 
 
 
-  const handleAddImageToResults = (image) => {
-    // handleClosePopover();
-    const addingResult = props.addImageToResults(image);
-    if (addingResult) {
-      setMessage(`Add image ${image} to results.`)
-    }
-    else {
-      setMessage(`Image ${image} is already in results.`)
-    }
-    handleOpenMessage();
-  }
-
   const [openMessage, setOpenMessage] = useState(false);
   const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('success');
   const handleCloseMessage = () => {
     setOpenMessage(false);
   }
@@ -182,7 +172,40 @@ export default function ImageGrid(props) {
     setOpenMessage(true);
   }
 
+  const handleAddImageToResults = (image) => {
+    fetch('https://vbs.itec.aau.at:9443/submit?session='+props.sessionID
+		+'&item='+image.split('/')[1].split('.')[0])
+			.then(response => response.json())
+			.then(response=>{
+        console.log(response)
+        if (response['status']==false) {
+          setSeverity('error')
+          setMessage(response['description'])
+        }
+        else {
+          if (response['description']=='Submission correct!') {
+            setSeverity('success')
+          }
+          else {
+            setSeverity('warning')
+          }
 
+          const addingResult = props.addImageToResults(image);
+          if (addingResult) {
+            setMessage(`${response['description']}\nAdd image ${image} to results.`)
+          }
+          else {
+            setMessage(`${response['description']}\nImage ${image} is already in results.`)
+          }
+        }
+        handleOpenMessage();
+      })
+    
+  }
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
   return (
     <div className={clsx(classes.content, {
@@ -227,9 +250,11 @@ export default function ImageGrid(props) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         open={openMessage}
         onClose={handleCloseMessage}
-        message={message}
-        autoHideDuration={6000}
-      />
+        autoHideDuration={5000}>
+        <Alert severity={severity}>
+          {message}
+        </Alert>
+      </Snackbar>
 
       <AdjacentImages
         open={openDialog}
