@@ -8,6 +8,7 @@ import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Backdrop from '@material-ui/core/Backdrop';
+import SendIcon from '@material-ui/icons/Send';
 
 const useStyles = makeStyles((theme) => ({
 	popover: {
@@ -103,10 +104,10 @@ export default function PopverCard(props) {
 					</Typography>
 
 					<div className={classes.addButton}>
-						<Tooltip classes={{ tooltip: classes.tooltip }} title="Add image to results" placement="top" aria-label="add">
+						<Tooltip classes={{ tooltip: classes.tooltip }} title="Submit image" placement="top" aria-label="add">
 							<Fab color='primary'
 								onClick={() => { props.handleAddImageToResults(props.selectedImage) }}>
-								<AddIcon fontSize='large' />
+								<SendIcon fontSize='large' />
 							</Fab>
 						</Tooltip>
 					</div>
