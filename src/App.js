@@ -159,19 +159,32 @@ export default function App() {
       })
   }
 
-  const filterByTimeRange = (timeBegin, timeEnd) => {
+  const filterByTimeRange = (timeBegin, timeEnd, date) => {
     const truncatedSteps = removeFollowingSteps()
-    return axios.get(`/server/query_by_time_range/${timeBegin}/${timeEnd}`)
-      .then(res => {
-        updateSteps(truncatedSteps, activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
-      })
+    // return axios.get(`/server/query_by_time_range/${timeBegin}/${timeEnd}`)
+    //   .then(res => {
+    //     updateSteps(truncatedSteps, activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
+    //   })
+    return axios.post('/server/query_by_time_range', {
+      timeBegin:timeBegin, timeEnd:timeEnd,
+      dowBegin:date[0], dowEnd:date[1],
+      dayBegin:date[2], dayEnd:date[3],
+      monthBegin:date[4], monthEnd:date[5],
+      yearBegin:date[6], yearEnd:date[7],
+    })
+    .then(res => {
+          updateSteps(truncatedSteps, activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
+        })
   }
-  const filterByTimeRangeOnSubset = (timeBegin, timeEnd) => {
+  const filterByTimeRangeOnSubset = (timeBegin, timeEnd, date) => {
     const truncatedSteps = removeFollowingSteps()
     return axios.post(`/server/query_by_time_range_on_subset`, {
       subset: steps[activeStep - 1].result,
-      timeBegin: timeBegin,
-      timeEnd: timeEnd,
+      timeBegin: timeBegin, timeEnd: timeEnd,
+      dowBegin:date[0], dowEnd:date[1],
+      dayBegin:date[2], dayEnd:date[3],
+      monthBegin:date[4], monthEnd:date[5],
+      yearBegin:date[6], yearEnd:date[7],
     })
       .then(res => {
         updateSteps(truncatedSteps, activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
