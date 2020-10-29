@@ -169,7 +169,6 @@ export default function App() {
     //     updateSteps(truncatedSteps, activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
     //   })
     let weekdayToIdx = {'Monday':1, 'Tuesday':2, 'Wednesday':3, 'Thursday':4, 'Friday':5, 'Saturday':6, 'Sunday':0}
-    console.log(body)
     return axios.post('/server/query_by_time', {
       subset:[],
       timeBegin:timeBegin==''?-1:timeBegin, timeEnd:timeEnd==''?-1:timeEnd,
