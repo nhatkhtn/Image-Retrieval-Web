@@ -77,7 +77,7 @@ export default function TimeFiltering(props) {
 
   const handleClick = () => {
     if (option === props.methods.timeRange.toString())
-      props.clickFilter(props.methods.timeRange)(timeBegin, timeEnd, date)
+      props.clickFilter(props.methods.timeRange)(timeBegin, timeEnd, dateValue)
     else
       props.clickFilter(props.methods.timeBefore)(minutes)
   }
