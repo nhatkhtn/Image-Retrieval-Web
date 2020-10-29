@@ -88,7 +88,10 @@ export default function HeaderBar(props) {
                 input: classes.inputInput,
               }}
               value={props.sessionID}
-              onChange={e=>props.setSessionID(e.target.value)}
+              onChange={e=>{
+                props.setSessionID(e.target.value);
+                localStorage.setItem('sessionID',e.target.value);
+              }}
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>

@@ -298,7 +298,8 @@ export default function App() {
 
   //////////////////////////////////////////////////////////////////////////
   // Handle session ID for LSC challenge
-  const [sessionID,setSessionID] = useState('');
+  const initialSessionID = localStorage.getItem('sessionID') || '';
+  const [sessionID,setSessionID] = useState(initialSessionID);
 
   return (
     <ThemeProvider theme={theme}>
