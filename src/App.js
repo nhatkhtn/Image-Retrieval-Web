@@ -165,7 +165,8 @@ export default function App() {
     //   .then(res => {
     //     updateSteps(truncatedSteps, activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
     //   })
-    return axios.post('/server/query_by_time_range', {
+    return axios.post('/server/query_by_time', {
+      subset:[],
       timeBegin:timeBegin==''?'-1':timeBegin, timeEnd:timeEnd==''?'-1':timeEnd,
       dowBegin:date[0]==''?'-1':date[0], dowEnd:date[1]==''?'-1':date[1],
       dayBegin:date[2]==''?'-1':date[2], dayEnd:date[3]==''?'-1':date[3],
@@ -178,7 +179,7 @@ export default function App() {
   }
   const filterByTimeRangeOnSubset = (timeBegin, timeEnd, date) => {
     const truncatedSteps = removeFollowingSteps()
-    return axios.post(`/server/query_by_time_range_on_subset`, {
+    return axios.post(`/server/query_by_time`, {
       subset: steps[activeStep - 1].result,
       timeBegin: timeBegin, timeEnd: timeEnd,
       dowBegin:date[0], dowEnd:date[1],
