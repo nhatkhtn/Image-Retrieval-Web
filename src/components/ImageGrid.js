@@ -18,9 +18,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
-const colsDrawerClose = 4;
+const colsDrawerClose = 5;
 const colsDrawerOpen = 6;
-const numImagesPerPageDrawerClose = 16;
+const numImagesPerPageDrawerClose = 20;
 const numImagesPerPageDrawerOpen = 24;
 
 const useStyles = makeStyles(theme => ({
