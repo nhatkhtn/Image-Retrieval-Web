@@ -166,11 +166,11 @@ export default function App() {
     //     updateSteps(truncatedSteps, activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
     //   })
     return axios.post('/server/query_by_time_range', {
-      timeBegin:timeBegin, timeEnd:timeEnd,
-      dowBegin:date[0], dowEnd:date[1],
-      dayBegin:date[2], dayEnd:date[3],
-      monthBegin:date[4], monthEnd:date[5],
-      yearBegin:date[6], yearEnd:date[7],
+      timeBegin:timeBegin==''?'-1':timeBegin, timeEnd:timeEnd==''?'-1':timeEnd,
+      dowBegin:date[0]==''?'-1':date[0], dowEnd:date[1]==''?'-1':date[1],
+      dayBegin:date[2]==''?'-1':date[2], dayEnd:date[3]==''?'-1':date[3],
+      monthBegin:date[4]==''?'-1':date[4], monthEnd:date[5]==''?'-1':date[5],
+      yearBegin:date[6]==''?'-1':date[6], yearEnd:date[7]==''?'-1':date[7],
     })
     .then(res => {
           updateSteps(truncatedSteps, activeStep, methods.timeRange, { timeBegin: timeBegin, timeEnd: timeEnd }, res.data.filenames)
