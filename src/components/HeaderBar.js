@@ -5,11 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
-import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import Slider from '@material-ui/core/Slider';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -57,6 +56,16 @@ export default function HeaderBar(props) {
   const theme = useTheme();
   const classes = useStyles(theme);
 
+  function ValueLabelComponent(props) {
+    const { children, open, value } = props;
+  
+    return (
+      <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
+        {children}
+      </Tooltip>
+    );
+  }
+
   return (
     <AppBar
       position="fixed"
@@ -77,6 +86,36 @@ export default function HeaderBar(props) {
         <Typography variant="h6" noWrap style={{ flexGrow: 1 }}>
           Lifelog Retrieval
         </Typography>
+        <Typography style={{display:'inline'}}>
+          Num cols
+        </Typography>
+        <Slider
+        value={props.cols}
+        onChange={(e,v)=>props.setCols(v)}
+        ValueLabelComponent={ValueLabelComponent}
+        valueLabelDisplay="auto"
+        step={1}
+        // marks
+        min={1}
+        max={10}
+        color='secondary'
+        style={{width:100,marginLeft:10,marginRight:30}}
+      />
+        <Typography style={{display:'inline'}}>
+          Num rows
+        </Typography>
+        <Slider
+        value={props.rows}
+        onChange={(e,v)=>props.setRows(v)}
+        ValueLabelComponent={ValueLabelComponent}
+        valueLabelDisplay="auto"
+        step={1}
+        // marks
+        min={1}
+        max={10}
+        color='secondary'
+        style={{width:100,marginLeft:10,marginRight:30}}
+      />
         <Typography style={{display:'inline'}}>
           Session ID
         </Typography>

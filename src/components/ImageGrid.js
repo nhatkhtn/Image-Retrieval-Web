@@ -20,8 +20,8 @@ import Button from '@material-ui/core/Button';
 
 const colsDrawerClose = 5;
 const colsDrawerOpen = 6;
-const numImagesPerPageDrawerClose = 20;
-const numImagesPerPageDrawerOpen = 24;
+const rowsDrawerClose = 4;
+const rowsDrawerOpen = 4;
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -103,31 +103,31 @@ export default function ImageGrid(props) {
   const classes = useStyles(props);
 
   const [showedImages, setShowedImages] = useState([])
-  const [numImagesPerPage, setNumImagesPerPage] = useState(1)
-  const [cols, setCols] = useState(1)
+  // const [numImagesPerPage, setNumImagesPerPage] = useState(1)
+  // const [cols, setCols] = useState(1)
   const [page, setPage] = useState(1)
   const handleChangePage = (event, value) => {
     setPage(value)
   }
 
-  useEffect(() => {
-    if (props.drawerOpen) {
-      setCols(colsDrawerClose);
-      setNumImagesPerPage(numImagesPerPageDrawerClose);
-    }
-    else {
-      setCols(colsDrawerOpen);
-      setNumImagesPerPage(numImagesPerPageDrawerOpen);
-    }
-  }, [props.drawerOpen])
+  // useEffect(() => {
+  //   if (props.drawerOpen) {
+  //     setCols(colsDrawerClose);
+  //     setNumImagesPerPage(colsDrawerClose*rowsDrawerClose);
+  //   }
+  //   else {
+  //     setCols(colsDrawerOpen);
+  //     setNumImagesPerPage(colsDrawerOpen*rowsDrawerOpen);
+  //   }
+  // }, [props.drawerOpen])
 
   useEffect(() => {
     setPage(1)
-    setShowedImages(props.imageList.slice((page - 1) * numImagesPerPage, page * numImagesPerPage))
-  }, [props.imageList, numImagesPerPage])
+    setShowedImages(props.imageList.slice((page - 1) * props.cols*props.rows, page * props.cols*props.rows))
+  }, [props.imageList, props.cols,props.rows])
 
   useEffect(() => {
-    setShowedImages(props.imageList.slice((page - 1) * numImagesPerPage, page * numImagesPerPage))
+    setShowedImages(props.imageList.slice((page - 1) * props.cols*props.rows, page * props.cols*props.rows))
   }, [page])
 
   ///////////////////////////////////////////////////////////////////////
@@ -229,12 +229,12 @@ export default function ImageGrid(props) {
       <div style={{overflowY: 'scroll',flexGrow: 1,overflowX:'hidden'}}>
       <div className={classes.paginationContainer}>
         <Pagination size="large" color="primary" showFirstButton showLastButton
-          count={Math.ceil(props.imageList.length / numImagesPerPage)}
+          count={Math.ceil(props.imageList.length / (props.cols*props.rows))}
           page={page} onChange={handleChangePage}
           className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
       </div>
 
-      <GridList cellHeight={'auto'} cols={cols} spacing={6} classes={{ root: classes.gridList }}>
+      <GridList cellHeight={'auto'} cols={props.cols} spacing={6} classes={{ root: classes.gridList }}>
         {showedImages.map((image) => (
           <GridListTile key={image} onClick={handleClick(image)} classes={{tile:classes.imageContainer}}>
             <img src={`/LSC_Thumbnail/${image}`} alt={image} className={classes.image} />
@@ -244,7 +244,7 @@ export default function ImageGrid(props) {
 
       <div className={classes.paginationContainer}>
         <Pagination size="large" color="primary" showFirstButton showLastButton
-          count={Math.ceil(props.imageList.length / numImagesPerPage)}
+          count={Math.ceil(props.imageList.length / (props.cols*props.rows))}
           page={page} onChange={handleChangePage}
           className={clsx({ [classes.hide]: props.imageList.length === 0 })} />
       </div>

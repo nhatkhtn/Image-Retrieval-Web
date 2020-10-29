@@ -23,6 +23,9 @@ class Step {
 
 const theme = createMuiTheme({
   palette: {
+    secondary: {
+      main: '#f5f5f5'
+    }
     // primary: {
     //   main: '#0055b8',
     // },
@@ -302,6 +305,12 @@ export default function App() {
   const initialSessionID = localStorage.getItem('sessionID') || '';
   const [sessionID,setSessionID] = useState(initialSessionID);
 
+
+  //////////////////////////////////////////////////////////////////////////
+  // Handle number of columns and rows in image grid
+  const [cols, setCols ] = useState(4);
+  const [rows, setRows] = useState(4);
+
   return (
     <ThemeProvider theme={theme}>
     <div className={classes.root}>
@@ -310,7 +319,8 @@ export default function App() {
         handleClickMenuButton={handleToggleDrawer}
         handleOpenResults={handleOpenResults} 
         sessionID={sessionID}
-        setSessionID={setSessionID}/>
+        setSessionID={setSessionID}
+        cols={cols} rows={rows} setCols={setCols} setRows={setRows}/>
 
       <ControlDrawer
         steps={steps}
@@ -332,7 +342,8 @@ export default function App() {
         addImageToResults={addImageToResults}
         loading={loadingStep===activeStep}
         error={error} 
-        sessionID={sessionID}/>
+        sessionID={sessionID}
+        cols={cols} rows={rows}/>
 
       <Results
         results={results}
