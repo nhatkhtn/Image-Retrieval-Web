@@ -177,8 +177,10 @@ export default function ImageGrid(props) {
   }
 
   const handleAddImageToResults = (image) => {
-    fetch('https://vbs.itec.aau.at:9443/submit?session='+props.sessionID
-		+'&item='+image.split('/')[1].split('.')[0])
+    let submit_url = 'https://vbs.itec.aau.at:9443/submit?session='+props.sessionID
+    +'&item='+image.split('/')[1].split('.')[0]
+    console.log('Request: '+submit_url);
+    fetch(submit_url)
 			.then(response => response.json())
 			.then(response=>{
         console.log(response)
@@ -277,6 +279,7 @@ export default function ImageGrid(props) {
         searchAdjacentImages={props.searchAdjacentImages}
         handleAddImageToResults={handleAddImageToResults}
         handleSearchSimilar={handleSearchSimilar}
+        handleOpenConfirm={handleOpenConfirm}
       />
 
       <Backdrop classes={{ root: classes.backdrop }} open={props.loading} >
