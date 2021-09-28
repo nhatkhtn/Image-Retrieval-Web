@@ -229,7 +229,8 @@ export default function AdjacentImages(props) {
 							selectedImage={selectedImage}
 							handleSearchSimilar={handleSearchSimilar}
 							handleAdjacentImages={handleAdjacentImages}
-							handleAddImageToResults={props.handleAddImageToResults}
+							// handleAddImageToResults={props.handleAddImageToResults}
+							handleOpenConfirm={props.handleOpenConfirm}
 						/>
 
 					</DialogContentText>
