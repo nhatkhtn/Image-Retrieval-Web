@@ -25,6 +25,8 @@ export default function LocationsFiltering(props) {
   const [locations, setLocations] = useState(props.locations)
   const [invalidInput, setInvalidInput] = useState(false);
 	const [helperText, setHelperText] = useState('')
+  const [inputValue, setInputValue] = useState('')
+  const [value, setValue] = useState([])
 	const inputRef = React.createRef();
 
 	const handleClick = () =>{
@@ -47,9 +49,11 @@ export default function LocationsFiltering(props) {
           multiple
           id="tags-outlined"
           options={locationList}
+          value={value}
           getOptionLabel={(option) => option}
           filterSelectedOptions
-          defaultValue={locations}
+          // defaultValue={locations}
+          inputValue={inputValue}
           ChipProps={{color:'primary'}}
           renderInput={(params) => (
             <TextField
@@ -62,7 +66,27 @@ export default function LocationsFiltering(props) {
               helperText={helperText}
             />
           )}
-          onChange={(event, value) => { setLocations(value) }}/>
+          onChange={(event, value) => { 
+            setValue(value)
+            setLocations(value)
+           }}
+           onKeyDown={(event)=>{
+             if (event.key==="Enter"){
+              let newValue = value
+               for (let i=0; i<locationList.length; i++){
+                if (newValue.includes(locationList[i])==false && locationList[i].toLowerCase().includes(inputValue.toLowerCase())){
+                  newValue.push(locationList[i])
+                }
+               }
+               setValue(newValue)
+               setLocations(newValue)
+               setInputValue('')
+             }
+           }}
+           onInputChange={(event, newInputValue) => {
+            setInputValue(newInputValue);
+          }}
+           />
       </div>
 
       <div className={classes.buttonContainer}>
