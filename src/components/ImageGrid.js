@@ -177,7 +177,7 @@ export default function ImageGrid(props) {
   }
 
   const handleAddImageToResults = (image) => {
-    let submit_url = 'https://vbs.itec.aau.at:9443/submit?session='+props.sessionID
+    let submit_url = 'https://vbs.itec.aau.at:9443/api/v1/submit?session='+props.sessionID
     +'&item='+image.split('/')[1].split('.')[0]
     console.log('Request: '+submit_url);
     fetch(submit_url)
