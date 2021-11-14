@@ -280,6 +280,7 @@ export default function ImageGrid(props) {
         handleAddImageToResults={handleAddImageToResults}
         handleSearchSimilar={handleSearchSimilar}
         handleOpenConfirm={handleOpenConfirm}
+        setSelectedImage={setSelectedImage}
       />
 
       <Backdrop classes={{ root: classes.backdrop }} open={props.loading} >

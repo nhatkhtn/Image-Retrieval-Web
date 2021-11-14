@@ -170,7 +170,8 @@ export default function AdjacentImages(props) {
 
 	const handleClick = (image) => (event) => {
 		setAnchorEl(event.currentTarget);
-		setSelectedImage(image)
+		setSelectedImage(image);
+		props.setSelectedImage(image);
 	};
 
 	const handleSearchSimilar = (image) => {
