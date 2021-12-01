@@ -4,6 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Install Node.js
 - Install yarn (npm install --global yarn)
 - run npm install
+- change IP in setupProxy.js to backend IP
+- run yarn start
 
 ## Available Scripts
 
