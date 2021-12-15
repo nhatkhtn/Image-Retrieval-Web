@@ -21,7 +21,7 @@
     "react-grid-dnd": "^2.1.2",
     "react-grid-layout": "^0.18.3",
     "react-papaparse": "^3.3.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.1",
     "react-swipeable-views": "^0.13.9",
     "styled-components": "^5.1.1"
   },

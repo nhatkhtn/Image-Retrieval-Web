@@ -84,7 +84,7 @@ export default function HeaderBar(props) {
         </IconButton>
 
         <Typography variant="h6" noWrap style={{ flexGrow: 1 }}>
-          Lifelog Retrieval
+          Video Retrieval
         </Typography>
         <Typography style={{display:'inline'}}>
           Num cols
